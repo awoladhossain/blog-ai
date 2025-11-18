@@ -5,7 +5,8 @@ import { Toaster } from "sonner";
 import App from "./App.jsx";
 import ThemeWrapper from "./components/Theme/ThemeWrapper.jsx";
 import "./index.css";
-import store from "./redux/store.js";
+import { store } from "./redux/store.js";
+// import store from "./redux/store.js";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

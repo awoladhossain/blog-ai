@@ -35,10 +35,10 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRouters);
 
-// Global Error Handler (Always LAST)
-app.use(errorMiddleware);
-
 const PORT = process.env.PORT || 6000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV} mode`);
 });
+
+// Global Error Handler (Always LAST)
+app.use(errorMiddleware);

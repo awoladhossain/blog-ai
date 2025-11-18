@@ -17,12 +17,13 @@ import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import z from "zod";
 const Signup = () => {
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.auth);
+  const navigation = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
   // this is the formschema
@@ -59,6 +60,7 @@ const Signup = () => {
       .then((res) => {
         toast.success(res.message || "Registration successful");
         form.reset();
+        navigation(RouteSignin);
       })
       .catch((err) => {
         toast.error(err || "Registration failed");
