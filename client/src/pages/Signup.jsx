@@ -9,14 +9,21 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { SpinnerCustom } from "@/components/ui/spinner";
 import { RouteSignin } from "@/helpers/RouteName";
+import { registerUser } from "@/redux/api/authAPI";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 import z from "zod";
 const Signup = () => {
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.auth);
+
   const [showPassword, setShowPassword] = useState(false);
   // this is the formschema
   const formSchema = z
@@ -47,6 +54,15 @@ const Signup = () => {
 
   // define a submit handler
   function onSubmit(values) {
+    dispatch(registerUser(values))
+      .unwrap()
+      .then((res) => {
+        toast.success(res.message || "Registration successful");
+        form.reset();
+      })
+      .catch((err) => {
+        toast.error(err || "Registration failed");
+      });
     console.log(values);
   }
   return (
@@ -163,12 +179,17 @@ const Signup = () => {
                 )}
               />
             </div>
-            <Button
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg"
-              type="submit"
-            >
-              Sign Up
-            </Button>
+
+            {loading ? (
+              <SpinnerCustom />
+            ) : (
+              <Button
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg"
+                type="submit"
+              >
+                Sign Up
+              </Button>
+            )}
           </form>
         </Form>
         <p className="text-sm text-muted-foreground text-center mt-4">

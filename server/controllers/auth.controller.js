@@ -5,8 +5,6 @@ import AppError from "../utils/AppError.js";
 import { catchAsync } from "../utils/catchAsync.js";
 import { successResponse } from "../utils/response.js";
 
-
-
 export const registerUser = catchAsync(async (req, res, next) => {
   const { fullname, email, password } = req.body;
   const existingUser = await User.findOne({ email });
@@ -24,6 +22,22 @@ export const registerUser = catchAsync(async (req, res, next) => {
   );
 });
 
-export const login = (req, res) => {
-  res.send("login");
-};
+export const loginUser = catchAsync(async (req, res, next) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email }).select("+password");
+  if (!email) {
+    return next(
+      new AppError("User Don't existing with the email"),
+      StatusCodes.BAD_REQUEST
+    );
+  }
+  const passwordMatch = await bcrypt.compare(password, user.password);
+  if (!passwordMatch) {
+    return next(
+      new AppError("Password doesn't Match"),
+      StatusCodes.BAD_GATEWAY
+    );
+  }
+
+  return successResponse(res, StatusCodes.OK, "User Login Successfull", user);
+});
