@@ -66,7 +66,7 @@ const Signup = () => {
     console.log(values);
   }
   return (
-    <div className="flex justify-center items-center h-screen w-screen bg-gray-100">
+    <div className="flex justify-center items-center h-screen w-screen bg-background">
       <Card className="w-[450px] p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
         <Form {...form}>
@@ -77,14 +77,14 @@ const Signup = () => {
                 name="fullname"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm font-medium text-gray-700">
+                    <FormLabel className="text-sm font-medium text-foreground">
                       Full Name
                     </FormLabel>
                     <FormControl>
                       <Input
                         placeholder="John Doe"
                         {...field}
-                        className="bg-white border-gray-300 focus:ring-2 focus:ring-blue-500"
+                        className="bg-input border-border focus:ring-2 focus:ring-primary"
                       />
                     </FormControl>
                     <FormMessage />
@@ -96,14 +96,14 @@ const Signup = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm font-medium text-gray-700">
+                    <FormLabel className="text-sm font-medium text-foreground">
                       Email
                     </FormLabel>
                     <FormControl>
                       <Input
                         placeholder="email@example.com"
                         {...field}
-                        className="bg-white border-gray-300 focus:ring-2 focus:ring-blue-500"
+                        className="bg-input border-border0 focus:ring-2 focus:ring-primary"
                       />
                     </FormControl>
                     <FormMessage />
@@ -115,7 +115,7 @@ const Signup = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm font-medium text-gray-700">
+                    <FormLabel className="text-sm font-medium text-foreground">
                       Password
                     </FormLabel>
                     <div className="relative">
@@ -124,7 +124,7 @@ const Signup = () => {
                           type={showPassword ? "text" : "password"}
                           placeholder="••••••••"
                           {...field}
-                          className="bg-white border-gray-300 focus:ring-2 focus:ring-blue-500 pr-10"
+                          className="bg-input border-border focus:ring-2 focus:ring-primary pr-10"
                         />
                       </FormControl>
                       <Button
@@ -149,7 +149,7 @@ const Signup = () => {
                 name="confirmPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm font-medium text-gray-700">
+                    <FormLabel className="text-sm font-medium text-foreground">
                       Confirm Password
                     </FormLabel>
                     <div className="relative">
@@ -158,7 +158,7 @@ const Signup = () => {
                           type={showPassword ? "text" : "password"}
                           placeholder="••••••••"
                           {...field}
-                          className="bg-white border-gray-300 focus:ring-2 focus:ring-blue-500 pr-10"
+                          className="bg-input border-border focus:ring-2 focus:ring-ring-primary pr-10"
                         />
                       </FormControl>
                       <Button
@@ -184,7 +184,7 @@ const Signup = () => {
               <SpinnerCustom />
             ) : (
               <Button
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg"
+                className="w-full bg-primary hover:bg-primary/80 text-primary-foreground font-medium py-2 rounded-lg"
                 type="submit"
               >
                 Sign Up

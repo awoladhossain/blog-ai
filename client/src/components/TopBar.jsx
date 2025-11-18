@@ -7,8 +7,8 @@ import { Button } from "./ui/button";
 
 const TopBar = () => {
   return (
-    <div className="flex justify-between items-center h-16 fixed w-full z-20 bg-white px-5 border-b">
-      <div>
+    <div className="flex justify-between items-center h-16 fixed w-full z-20 bg-background px-5 border-b border-border">
+      <div className="text-foreground">
         <BookOpenText className="w-10 h-10 mx-2" />
       </div>
       <div className="w-[500px]">
