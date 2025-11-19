@@ -41,6 +41,26 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+// Google Login,
+export const googleLogin = createAsyncThunk(
+  "auth/google",
+  async (bodyData, thunkAPI) => {
+    try {
+      const response = await axiosInstance.post(
+        "/auth/google",
+        bodyData,
+        { withCredentials: true }
+      );
+      console.log(response);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Login failed with Google"
+      );
+    }
+  }
+);
+
 // LOGOUT
 export const logoutUser = createAsyncThunk(
   "auth/logout",

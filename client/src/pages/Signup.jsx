@@ -1,3 +1,4 @@
+import GoogleLogin from "@/components/GoogleLogin";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
@@ -9,6 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 import { SpinnerCustom } from "@/components/ui/spinner";
 import { RouteSignin } from "@/helpers/RouteName";
 import { registerUser } from "@/redux/api/authAPI";
@@ -71,6 +73,14 @@ const Signup = () => {
     <div className="flex justify-center items-center h-screen w-screen bg-background">
       <Card className="w-[450px] p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
+        <div>
+          <GoogleLogin />
+          <div className="flex items-center w-full space-x-2 my-2 text-sm">
+            <Separator className="flex-1" />
+            <span className="px-2">OR</span>
+            <Separator className="flex-1" />
+          </div>
+        </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-4">
