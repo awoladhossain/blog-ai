@@ -43,6 +43,7 @@ export const loginUser = catchAsync(async (req, res, next) => {
     secure: process.env.NODE_ENV === "production", // true only in production
     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     maxAge: 7 * 24 * 60 * 60 * 1000,
+    path: "/",
   });
 
   return successResponse(res, StatusCodes.OK, "User Login Successfull", {
@@ -55,4 +56,56 @@ export const loginUser = catchAsync(async (req, res, next) => {
     },
     token,
   });
+});
+
+export const googleLogin = catchAsync(async (req, res, next) => {
+  const {fullname, email, avatar}=req.body;
+  let user;
+  user = await User.findOne({ email });
+  if (!user) {
+    // create a new user
+    const password = Math.round(Math.random() * 10000000).toString(); // ensure string
+    const hashedPassword = bcrypt.hashSync(password, 10);
+    const newUser = new User({
+      fullname,
+      email,
+      password: hashedPassword,
+      avatar,
+    });
+    user = await newUser.save();
+  }
+  const token = generateToken(user._id);
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production", // true only in production
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    path: "/",
+  });
+  return successResponse(
+    res,
+    StatusCodes.OK,
+    "User Login Successfull with Google",
+    {
+      user: {
+        _id: user._id,
+        role: user.role,
+        fullname: user.fullname,
+        email: user.email,
+        avatar: user.avatar,
+      },
+      token,
+    }
+  );
+});
+
+export const logoutUser = catchAsync(async (req, res, next) => {
+  res.cookie("token", null, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production", // true only in production
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    path: "/",
+  });
+  return successResponse(res, StatusCodes.OK, "User Logout Successfull", null);
 });
