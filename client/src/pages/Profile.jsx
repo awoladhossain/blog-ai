@@ -1,5 +1,6 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Card, CardContent } from '@/components/ui/card'
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -8,55 +9,85 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from '@/components/ui/input';
-import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
-import { z } from "zod";
+import { Input } from "@/components/ui/input";
+import { SpinnerCustom } from "@/components/ui/spinner";
+import { Textarea } from "@/components/ui/textarea";
+import { getUserById } from "@/redux/api/userAPI";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Camera, Eye, EyeOff } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Button } from '@/components/ui/button';
-import { Eye, EyeOff } from 'lucide-react';
-import { Textarea } from '@/components/ui/textarea';
+import { useDispatch, useSelector } from "react-redux";
+import { z } from "zod";
 const Profile = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const { user, loading } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  // logged-in user(from authSlice)
+  const { user: authUser } = useSelector((state) => state.auth);
 
-    const [showPassword, setShowPassword] = useState(false);
+  // Fetched full profile (from userSlice)
+  const { user: profileUser, loading } = useSelector((state) => state.user);
 
-    // Validation schema
-    const formSchema = z.object({
-      fullname: z.string().min(3, "Fullname must be at least 3 characters"),
-      email: z.string().email(),
-      bio: z.string().optional(),
-      password: z
-        .string()
-        .min(6, "Password must be at least 6 characters")
-        .optional(),
-    });
 
-    // Load user data into form
-    const form = useForm({
-      resolver: zodResolver(formSchema),
-      defaultValues: {
-        fullname: user?.fullname || "",
-        email: user?.email || "",
-        bio: user?.bio || "",
+
+  // Fetch full user profile
+  useEffect(() => {
+    if (authUser?._id) {
+      dispatch(getUserById(authUser._id));
+    }
+  }, [authUser]);
+
+
+  const [showPassword, setShowPassword] = useState(false);
+  // Validation schema
+  const formSchema = z.object({
+    fullname: z.string().min(3, "Fullname must be at least 3 characters"),
+    email: z.string().email(),
+    bio: z.string().optional(),
+    password: z
+      .string()
+      .min(6, "Password must be at least 6 characters")
+      .optional(),
+  });
+  // Load user data into form
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      fullname: "",
+      email: "",
+      bio: "",
+      password: "",
+    },
+  });
+
+  useEffect(() => {
+    if (profileUser) {
+      form.reset({
+        fullname: profileUser.fullname,
+        email: profileUser.email,
+        bio: profileUser.bio || "",
         password: "",
-      },
-    });
+      });
+    }
+  }, [profileUser]);
 
-    const onSubmit = (values) => {
-      // dispatch(updateProfile(values))
-      //   .unwrap()
-      //   .then((res) => {
-      //     toast.success("Profile updated successfully");
-      //   })
-      //   .catch((err) => toast.error(err || "Update failed"));
-      console.log(values)
-    };
+
+  if (loading) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <SpinnerCustom />
+      </div>
+    );
+  }
+
+  const onSubmit = (values) => {
+    // dispatch(updateProfile(values))
+    //   .unwrap()
+    //   .then((res) => {
+    //     toast.success("Profile updated successfully");
+    //   })
+    //   .catch((err) => toast.error(err || "Update failed"));
+    console.log(values);
+  };
   return (
     <div className="pt-28 px-6">
       {" "}
@@ -64,8 +95,11 @@ const Profile = () => {
       <Card className="max-w-3xl mx-auto">
         <CardContent>
           <div className="flex justify-center items-center mt-10">
-            <Avatar className="w-20 h-20">
-              <AvatarImage src={user?.avatar} />
+            <Avatar className="w-20 h-20 relative cursor-pointer">
+              <AvatarImage src={profileUser?.avatar} />
+              <div className="absolute bottom-0 left-1/2 z-10 w-6 h-6 bg-white rounded-full flex justify-center items-center shadow-md">
+                <Camera className="w-4 h-4 text-black" />
+              </div>
               <AvatarFallback>U</AvatarFallback>
             </Avatar>
           </div>
@@ -176,6 +210,6 @@ const Profile = () => {
       </Card>
     </div>
   );
-}
+};
 
-export default Profile
+export default Profile;
