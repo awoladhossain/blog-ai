@@ -1,4 +1,4 @@
-import { RouteSignin } from "@/helpers/RouteName";
+import { RouteIndex, RouteProfile, RouteSignin } from "@/helpers/RouteName";
 import { logoutUser } from "@/redux/api/authAPI";
 import { BookOpenText, LogIn, LogOut, MessageSquarePlus, User } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -36,7 +36,9 @@ const TopBar = () => {
   return (
     <div className="flex justify-between items-center h-16 fixed w-full z-20 bg-background px-5 border-b border-border">
       <div className="text-foreground">
-        <BookOpenText className="w-10 h-10 mx-2" />
+        <Link to={RouteIndex}>
+          <BookOpenText className="w-10 h-10 mx-2" />
+        </Link>
       </div>
       <div className="w-[500px]">
         <SearchBox />
@@ -58,7 +60,7 @@ const TopBar = () => {
               <DropdownMenuLabel>{user?.fullname}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
-                <Link to="/">
+                <Link to={RouteProfile}>
                   <User className="w-5 h-5" />
                   Profile
                 </Link>

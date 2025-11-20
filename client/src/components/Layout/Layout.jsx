@@ -6,13 +6,11 @@ import { SidebarProvider } from "../ui/sidebar";
 
 const Layout = () => {
   return (
-    // top bar
-    // side bar
     <SidebarProvider>
       <TopBar />
       <AppSidebar />
       <main className="w-full bg-background text-foreground">
-        <div className="w-full min-h-[calc(100vh-45px)]">
+        <div className="w-full min-h-[calc(100vh-45px)]  ">
           <Outlet />
         </div>
 
