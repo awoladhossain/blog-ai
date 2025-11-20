@@ -1,3 +1,4 @@
+import GoogleLogin from "@/components/GoogleLogin";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
@@ -9,6 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 import { RouteIndex, RouteSignup } from "@/helpers/RouteName";
 import { loginUser } from "@/redux/api/authAPI";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -58,6 +60,14 @@ const Signin = () => {
     <div className="flex justify-center items-center h-screen w-screen bg-background">
       <Card className="w-[450px] p-8 rounded-lg shadow-md bg-card text-card-foreground">
         <h2 className="text-2xl font-bold mb-4">Sign In</h2>
+        <div>
+          <GoogleLogin />
+          <div className="flex items-center w-full space-x-2 my-2 text-sm">
+            <Separator className="flex-1" />
+            <span className="px-2">OR</span>
+            <Separator className="flex-1" />
+          </div>
+        </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-4">

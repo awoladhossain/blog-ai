@@ -26,6 +26,7 @@ const GoogleLogin = () => {
       .unwrap()
       .then((res) => {
         toast.success(res.message || "User Login Successfull with Google");
+        // console.log(res.message)
         navigate(RouteIndex);
       })
       .catch((err) => {
