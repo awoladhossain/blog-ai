@@ -5,6 +5,7 @@ import morgan from "morgan";
 import connectDB from "./database/db.js";
 import errorMiddleware from "./middlewares/error.middleware.js";
 import authRouters from "./routes/auth.routes.js";
+import userRouters from "./routes/user.routes.js";
 
 // Create app
 const app = express();
@@ -34,6 +35,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRouters);
+app.use("/api/users", userRouters);
 
 const PORT = process.env.PORT || 6000;
 app.listen(PORT, () => {
