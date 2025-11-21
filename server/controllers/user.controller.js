@@ -12,3 +12,7 @@ export const getUserByID = catchAsync(async (req, res, next) => {
   }
   return successResponse(res, StatusCodes.OK, "User found successfully", user);
 });
+
+export const updateUserProfile = catchAsync(async (req,res,next)=>{
+  
+})
