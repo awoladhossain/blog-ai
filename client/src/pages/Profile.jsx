@@ -12,12 +12,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { SpinnerCustom } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
-import { getUserById } from "@/redux/api/userAPI";
+import { getUserById, updateUserProfile } from "@/redux/api/userAPI";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Camera, Eye, EyeOff } from "lucide-react";
 import { useEffect, useState } from "react";
+import Dropzone from "react-dropzone";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "sonner";
 import { z } from "zod";
 const Profile = () => {
   const dispatch = useDispatch();
@@ -27,16 +29,14 @@ const Profile = () => {
   // Fetched full profile (from userSlice)
   const { user: profileUser, loading } = useSelector((state) => state.user);
 
-
-
   // Fetch full user profile
   useEffect(() => {
     if (authUser?._id) {
       dispatch(getUserById(authUser._id));
     }
   }, [authUser]);
-
-
+  const [avatarPreview, setAvatarPreview] = useState(null);
+  const [avatarFile, setAvatarFile] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   // Validation schema
   const formSchema = z.object({
@@ -70,7 +70,6 @@ const Profile = () => {
     }
   }, [profileUser]);
 
-
   if (loading) {
     return (
       <div className="w-full h-screen flex items-center justify-center">
@@ -78,16 +77,45 @@ const Profile = () => {
       </div>
     );
   }
+  const handleFileUpload = (files) => {
+    console.log(files[0]);
+    const file = files[0];
+    const preview = URL.createObjectURL(file);
+    setAvatarFile(file);
+    setAvatarPreview(preview);
+  };
 
   const onSubmit = (values) => {
-    // dispatch(updateProfile(values))
+    const formData = new FormData();
+    if (avatarFile) {
+      formData.append("avatar", avatarFile);
+    }
+    formData.append("fullname", values.fullname);
+    formData.append("bio", values.bio);
+    formData.append("password", values.password);
+    console.log(profileUser._id);
+
+    // debugging
+    for (let pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
+    // dispatch(updateProfile(formData))
     //   .unwrap()
     //   .then((res) => {
     //     toast.success("Profile updated successfully");
     //   })
     //   .catch((err) => toast.error(err || "Update failed"));
-    console.log(values);
+    // console.log(formData);
+    // dispatch(updateUserProfile({ userId: profileUser._id, formData }))
+    //   .unwrap()
+    //   .then((res) => {
+    //     toast.success(res.message || "Profile updated successfully");
+    //   })
+    //   .catch((err) => {
+    //     toast.error(err || "Update failed");
+    //   });
   };
+
   return (
     <div className="pt-28 px-6">
       {" "}
@@ -95,13 +123,26 @@ const Profile = () => {
       <Card className="max-w-3xl mx-auto">
         <CardContent>
           <div className="flex justify-center items-center mt-10">
-            <Avatar className="w-20 h-20 relative cursor-pointer">
-              <AvatarImage src={profileUser?.avatar} />
-              <div className="absolute bottom-0 left-1/2 z-10 w-6 h-6 bg-white rounded-full flex justify-center items-center shadow-md">
-                <Camera className="w-4 h-4 text-black" />
-              </div>
-              <AvatarFallback>U</AvatarFallback>
-            </Avatar>
+            <Dropzone
+              onDrop={(acceptedFiles) => {
+                handleFileUpload(acceptedFiles);
+              }}
+            >
+              {({ getRootProps, getInputProps }) => (
+                <div {...getRootProps()}>
+                  <input {...getInputProps()} />
+                  <Avatar className="w-20 h-20 relative cursor-pointer">
+                    <AvatarImage
+                      src={avatarPreview ? avatarPreview : profileUser?.avatar}
+                    />
+                    <div className="absolute bottom-0 left-1/2 z-10 w-6 h-6 bg-white rounded-full flex justify-center items-center shadow-md">
+                      <Camera className="w-4 h-4 text-black" />
+                    </div>
+                    <AvatarFallback>U</AvatarFallback>
+                  </Avatar>
+                </div>
+              )}
+            </Dropzone>
           </div>
 
           <div className="mt-8">
