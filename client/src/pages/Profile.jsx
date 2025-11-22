@@ -28,7 +28,7 @@ const Profile = () => {
 
   // Fetched full profile (from userSlice)
   const { user: profileUser, loading } = useSelector((state) => state.user);
-
+  // console.log(profileUser?.avatar);
   // Fetch full user profile
   useEffect(() => {
     if (authUser?._id) {
@@ -44,9 +44,7 @@ const Profile = () => {
     fullname: z.string().min(3, "Fullname must be at least 3 characters"),
     email: z.string().email(),
     bio: z.string().optional(),
-    password: z
-      .string().min(6, "Password must be at least 6 characters long")
-      .optional(),
+    password: z.string().optional(),
   });
   // Load user data into form
   const form = useForm({

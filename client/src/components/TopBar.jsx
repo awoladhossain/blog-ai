@@ -1,6 +1,12 @@
 import { RouteIndex, RouteProfile, RouteSignin } from "@/helpers/RouteName";
 import { logoutUser } from "@/redux/api/authAPI";
-import { BookOpenText, LogIn, LogOut, MessageSquarePlus, User } from "lucide-react";
+import {
+  BookOpenText,
+  LogIn,
+  LogOut,
+  MessageSquarePlus,
+  User,
+} from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -21,6 +27,7 @@ const TopBar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isAuthenticated, user } = useSelector((state) => state.auth || {});
+  const { user: profileUser, loading } = useSelector((state) => state.user);
 
   const handleLogout = () => {
     dispatch(logoutUser())
@@ -51,7 +58,7 @@ const TopBar = () => {
             <DropdownMenuTrigger>
               <Avatar>
                 <AvatarImage
-                  src={user?.avatar || "https://github.com/shadcn.png"}
+                  src={profileUser?.avatar || "https://github.com/shadcn.png"}
                 />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>

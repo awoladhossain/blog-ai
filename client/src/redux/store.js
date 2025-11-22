@@ -14,18 +14,23 @@ import authReducer from "./slices/authSlices";
 import themeReducer from "./slices/themeSlice";
 import userReducer from "./slices/userSlices";
 
-
 const persistConfig = {
   key: "auth",
   storage,
 };
 
+const themePersistConfig = {
+  key: "theme",
+  storage,
+};
+
 const persistedAuthReducer = persistReducer(persistConfig, authReducer);
+const persistedThemeReducer = persistReducer(themePersistConfig, themeReducer);
 
 export const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
-    theme: themeReducer,
+    theme: persistedThemeReducer,
     user: userReducer,
   },
   middleware: (getDefaultMiddleware) => {
