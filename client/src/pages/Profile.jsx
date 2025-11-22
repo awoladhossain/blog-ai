@@ -39,13 +39,13 @@ const Profile = () => {
   const [avatarFile, setAvatarFile] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   // Validation schema
+  // ! bug is here to update the password field if i don't wants
   const formSchema = z.object({
     fullname: z.string().min(3, "Fullname must be at least 3 characters"),
     email: z.string().email(),
     bio: z.string().optional(),
     password: z
-      .string()
-      .min(6, "Password must be at least 6 characters")
+      .string().min(6, "Password must be at least 6 characters long")
       .optional(),
   });
   // Load user data into form
@@ -106,14 +106,14 @@ const Profile = () => {
     //   })
     //   .catch((err) => toast.error(err || "Update failed"));
     // console.log(formData);
-    // dispatch(updateUserProfile({ userId: profileUser._id, formData }))
-    //   .unwrap()
-    //   .then((res) => {
-    //     toast.success(res.message || "Profile updated successfully");
-    //   })
-    //   .catch((err) => {
-    //     toast.error(err || "Update failed");
-    //   });
+    dispatch(updateUserProfile({ id: profileUser._id, formData }))
+      .unwrap()
+      .then((res) => {
+        toast.success(res.message || "Profile updated successfully");
+      })
+      .catch((err) => {
+        toast.error(err || "Update failed");
+      });
   };
 
   return (

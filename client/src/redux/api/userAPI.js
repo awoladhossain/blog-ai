@@ -17,9 +17,10 @@ export const getUserById = createAsyncThunk(
 // UPDATE USER PROFILE
 export const updateUserProfile = createAsyncThunk(
   "users/updateUserProfile",
-  async ({ userId, formData }, thunkAPI) => {
+  async ({ id, formData }, thunkAPI) => {
     try {
-      const response = await axiosInstance.put(`/users/${userId}`, formData, {
+      console.log({id,formData})
+      const response = await axiosInstance.put(`/users/${id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
