@@ -119,10 +119,12 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground font-sans;
     font-family: var(--font-sans);
   }
+
   button {
     @apply cursor-pointer;
   }
@@ -132,6 +134,11 @@
   * {
     @apply border-border outline-ring/50;
   }
+
+  html {
+    transition: background-color 0.3s, color 0.3s;
+  }
+
   body {
     @apply bg-background text-foreground;
   }

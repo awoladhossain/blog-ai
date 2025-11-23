@@ -19,6 +19,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "./ui/sidebar";
+import { RouteCategoryDetails } from "@/helpers/RouteName";
 
 const AppSidebar = () => {
   return (
@@ -38,7 +39,7 @@ const AppSidebar = () => {
             <SidebarMenuItem>
               <SidebarMenuButton>
                 <ChartColumnStacked />
-                <Link to="/">Category</Link>
+                <Link to={RouteCategoryDetails}>Categories</Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>

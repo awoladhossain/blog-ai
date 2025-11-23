@@ -3,5 +3,11 @@ export const RouteSignup = '/signup'
 export const RouteSignin = '/signin'
 export const RouteProfile = '/profile'
 export const RouteCategoryDetails = '/categories'
-export const RouterAddCategory = '/categories/add'
-export const RouterEditCategory = '/categories/edit'
+export const RouteAddCategory = '/categories/add'
+export const RouteEditCategory = (category_id)=>{
+  if(category_id){
+    return `/categories/edit/${category_id}`;
+  }else{
+    return `/categories/edit/:category_id`;
+  }
+}
