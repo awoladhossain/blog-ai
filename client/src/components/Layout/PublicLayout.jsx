@@ -8,7 +8,7 @@ import Theme from "../Theme/Theme";
 
 const PublicLayout = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-600 to-purple-700 dark:from-gray-900 dark:to-indigo-950 text-white flex flex-col">
+    <div className="min-h-screen bg-linear-to-br from-indigo-600 to-purple-700 dark:from-gray-900 dark:to-indigo-950 text-white flex flex-col">
       <header className="p-4 md:p-6 flex justify-between items-center bg-white/10 dark:bg-black/10 backdrop-blur-sm">
         <h1 className="text-2xl md:text-3xl font-bold">MySite</h1>
         <nav className="flex items-center gap-2 md:gap-4">
