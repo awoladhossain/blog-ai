@@ -7,13 +7,13 @@ export const createCategory = createAsyncThunk(
     console.log(data)
     try {
       const response = await axiosInstance.post("/categories/add", data);
-
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data?.message);
     }
   }
 );
+
 export const getAllCategories = createAsyncThunk("category/getAll", async(_, thunkAPI)=>{
   try {
     const response = await axiosInstance.get("/categories/");

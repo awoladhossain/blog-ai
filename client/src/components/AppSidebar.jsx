@@ -19,7 +19,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "./ui/sidebar";
-import { RouteCategoryDetails } from "@/helpers/RouteName";
+import { RouteCategoryDetails, RouteIndex } from "@/helpers/RouteName";
 
 const AppSidebar = () => {
   return (
@@ -33,7 +33,7 @@ const AppSidebar = () => {
             <SidebarMenuItem>
               <SidebarMenuButton>
                 <HousePlus />
-                <Link to="/">Home</Link>
+                <Link to={RouteIndex}>Home</Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
@@ -79,5 +79,6 @@ const AppSidebar = () => {
     </Sidebar>
   );
 };
+
 
 export default AppSidebar;

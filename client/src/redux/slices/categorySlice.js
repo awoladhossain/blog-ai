@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { createCategory, getAllCategories } from "../api/categoryAPI";
 
 const initialState = {
-  category: null,
+  category: [],
   loading: false,
   error: null,
 };
@@ -19,7 +19,11 @@ const categorySlice = createSlice({
       })
       .addCase(createCategory.fulfilled, (state, action) => {
         state.loading = false;
-        state.category = action.payload.data;
+        if(Array.isArray(state.category)){
+          state.category.push(action.payload.data);
+        }else {
+          state.category=[action.payload.data];
+        }
         state.error = null;
       })
       .addCase(createCategory.rejected, (state, action) => {

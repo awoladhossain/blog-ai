@@ -1,10 +1,12 @@
-import { RouteAddCategory } from "@/helpers/RouteName";
+import { RouteAddCategory, RouteEditCategory } from "@/helpers/RouteName";
 import { getAllCategories } from "@/redux/api/categoryAPI";
+import { SquarePen, Trash } from "lucide-react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader } from "../ui/card";
+import { SpinnerCustom } from "../ui/spinner";
 import {
   Table,
   TableBody,
@@ -20,46 +22,84 @@ const CategoryDetails = () => {
     (state) => state.category
   );
   console.log(categories);
+
   useEffect(() => {
     dispatch(getAllCategories());
   }, []);
+
+  if (loading) {
+    return <SpinnerCustom />;
+  }
   return (
     <div className="pt-20 px-10">
-      <Card>
-        <CardHeader>
-          <div>
-            <Button asChild>
-              <Link to={RouteAddCategory}>Add Content</Link>
-            </Button>
-          </div>
+      <Card className="shadow-sm border border-border">
+        <CardHeader className="flex flex-row justify-between items-center">
+          <h2 className="text-xl font-semibold">Categories</h2>
+          <Button asChild className="bg-primary hover:bg-primary/80">
+            <Link to={RouteAddCategory}>Add Category</Link>
+          </Button>
         </CardHeader>
+
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[100px]">Category</TableHead>
-                <TableHead className="text-center">Slug</TableHead>
-                <TableHead className="text-right">Action</TableHead>
-                {/* <TableHead className="text-right">Amount</TableHead> */}
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {categories?.map((category) => {
-                return (
-                  <TableRow key={category?._id}>
+          {categories?.length === 0 ? (
+            <div className="py-10 text-center text-muted-foreground">
+              No categories found.
+            </div>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow className="hover:bg-transparent">
+                  <TableHead className="w-[200px] font-semibold">
+                    Category
+                  </TableHead>
+                  <TableHead className="text-center font-semibold">
+                    Slug
+                  </TableHead>
+                  <TableHead className="text-right font-semibold">
+                    Actions
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+
+              <TableBody>
+                {categories.map((category) => (
+                  <TableRow
+                    key={category._id}
+                    className="hover:bg-muted/50 transition-colors"
+                  >
                     <TableCell className="font-medium">
-                      {category?.name}
+                      {category.name}
                     </TableCell>
-                    <TableCell className="text-center">
-                      {category?.slug}
+
+                    <TableCell className="text-center  text-muted-foreground">
+                      {category.slug}
                     </TableCell>
-                    <TableCell className="text-right">Credit Card</TableCell>
-                    {/* <TableCell className="text-right">$250.00</TableCell> */}
+
+                    <TableCell className="text-right space-x-2">
+                      <Link to={RouteEditCategory(category._id)}>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="hover:bg-primary/10"
+                        >
+                          <SquarePen />
+                          Edit
+                        </Button>
+                      </Link>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        className="hover:bg-red-600"
+                      >
+                        <Trash />
+                        Delete
+                      </Button>
+                    </TableCell>
                   </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
+                ))}
+              </TableBody>
+            </Table>
+          )}
         </CardContent>
       </Card>
     </div>
