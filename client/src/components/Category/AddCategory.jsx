@@ -7,20 +7,21 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { createCategory } from "@/redux/api/categoryAPI";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import slugify from "slugify";
+import { toast } from "sonner";
 import z from "zod";
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
 import { SpinnerCustom } from "../ui/spinner";
-import slugify from "slugify";
 const AddCategory = () => {
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.auth);
-  const navigation = useNavigate();
+
+  const { loading, error } = useSelector((state) => state.category);
 
   const [showPassword, setShowPassword] = useState(false);
   // this is the formschema
@@ -42,16 +43,25 @@ const AddCategory = () => {
     },
   });
 
-  useEffect(()=>{
+  useEffect(() => {
     const categoryName = form.watch("name");
-    if(categoryName){
-      const slug = slugify(categoryName,{lower: true});
-      form.setValue("slug",slug);
+    if (categoryName) {
+      const slug = slugify(categoryName, { lower: true });
+      form.setValue("slug", slug);
     }
-  },)
+  });
   // define a submit handler
   function onSubmit(values) {
     console.log(values);
+    dispatch(createCategory(values))
+      .unwrap()
+      .then((res) => {
+        toast.success(res.message || "Category created successfully");
+      })
+      .catch((err) => {
+        toast.error(err || "Category creation failed");
+      });
+    form.reset();
   }
 
   return (
