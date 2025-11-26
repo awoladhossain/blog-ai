@@ -1,15 +1,22 @@
-import React from 'react'
-import { Input } from './ui/input'
+import React from "react";
+import { motion } from "framer-motion";
+import { Input } from "./ui/input";
 
 const SearchBox = () => {
   return (
-    <form>
-      <Input
-        placeholder="Search..."
-        className="h-9 rounded-full bg-input text-foreground border border-border focus:ring-2 focus:ring-primary"
-      />
-    </form>
+    <motion.form
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+        <Input
+          placeholder="Search..."
+          className="h-9 rounded-full bg-input text-foreground border border-border focus:ring-2 focus:ring-primary"
+        />
+      </motion.div>
+    </motion.form>
   );
-}
+};
 
-export default SearchBox
+export default SearchBox;

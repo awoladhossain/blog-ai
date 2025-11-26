@@ -3,6 +3,7 @@ import AddCategory from "./components/Category/AddCategory";
 import CategoryDetails from "./components/Category/CategoryDetails";
 import EditCategory from "./components/Category/EditCategory";
 import Layout from "./components/Layout/Layout";
+import PublicLayout from "./components/Layout/PublicLayout";
 import {
   RouteAddCategory,
   RouteCategoryDetails,
@@ -11,6 +12,7 @@ import {
   RouteProfile,
   RouteSignin,
   RouteSignup,
+  RouteWelcome,
 } from "./helpers/RouteName";
 import Index from "./pages/Index";
 import Profile from "./pages/Profile";
@@ -21,6 +23,14 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Welcome/Landing Page - First page users see */}
+        <Route path={RouteWelcome} element={<PublicLayout />} />
+
+        {/* Auth Routes - No layout */}
+        <Route path={RouteSignin} element={<Signin />} />
+        <Route path={RouteSignup} element={<Signup />} />
+
+        {/* Main App Routes - With sidebar layout */}
         <Route path={RouteIndex} element={<Layout />}>
           <Route index element={<Index />} />
           <Route path={RouteProfile} element={<Profile />} />
@@ -28,10 +38,6 @@ const App = () => {
           <Route path={RouteCategoryDetails} element={<CategoryDetails />} />
           <Route path={RouteEditCategory()} element={<EditCategory />} />
         </Route>
-
-        {/* for sign in and signup */}
-        <Route path={RouteSignin} element={<Signin />} />
-        <Route path={RouteSignup} element={<Signup />} />
       </Routes>
     </BrowserRouter>
   );

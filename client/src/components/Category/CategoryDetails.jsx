@@ -1,9 +1,10 @@
 import { RouteAddCategory, RouteEditCategory } from "@/helpers/RouteName";
-import { getAllCategories } from "@/redux/api/categoryAPI";
+import { deleteCategory, getAllCategories } from "@/redux/api/categoryAPI";
 import { SquarePen, Trash } from "lucide-react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { SpinnerCustom } from "../ui/spinner";
@@ -21,8 +22,6 @@ const CategoryDetails = () => {
   const { category: categories, loading } = useSelector(
     (state) => state.category
   );
-  console.log(categories);
-
   useEffect(() => {
     dispatch(getAllCategories());
   }, []);
@@ -30,6 +29,17 @@ const CategoryDetails = () => {
   if (loading) {
     return <SpinnerCustom />;
   }
+  const deleteCategoryFromDB = (id) => {
+    console.log("deleted this: ", id);
+    dispatch(deleteCategory(id))
+      .unwrap()
+      .then((res) => {
+        toast.success(res.message || "Category deleted successfully");
+      })
+      .catch((err) => {
+        toast.error(err || "Delete failed");
+      });
+  };
   return (
     <div className="pt-20 px-10">
       <Card className="shadow-sm border border-border">
@@ -87,6 +97,7 @@ const CategoryDetails = () => {
                         </Button>
                       </Link>
                       <Button
+                        onClick={() => deleteCategoryFromDB(category._id)}
                         variant="destructive"
                         size="sm"
                         className="hover:bg-red-600"

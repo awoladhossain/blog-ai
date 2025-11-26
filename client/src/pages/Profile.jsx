@@ -97,13 +97,6 @@ const Profile = () => {
     for (let pair of formData.entries()) {
       console.log(pair[0], pair[1]);
     }
-    // dispatch(updateProfile(formData))
-    //   .unwrap()
-    //   .then((res) => {
-    //     toast.success("Profile updated successfully");
-    //   })
-    //   .catch((err) => toast.error(err || "Update failed"));
-    // console.log(formData);
     dispatch(updateUserProfile({ id: profileUser._id, formData }))
       .unwrap()
       .then((res) => {

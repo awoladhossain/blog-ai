@@ -1,3 +1,4 @@
+import { RouteCategoryDetails, RouteIndex } from "@/helpers/RouteName";
 import {
   BookOpenText,
   ChartColumnStacked,
@@ -11,7 +12,6 @@ import { Link } from "react-router-dom";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupLabel,
   SidebarHeader,
@@ -19,7 +19,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "./ui/sidebar";
-import { RouteCategoryDetails, RouteIndex } from "@/helpers/RouteName";
 
 const AppSidebar = () => {
   return (
@@ -31,16 +30,20 @@ const AppSidebar = () => {
         <SidebarGroup>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton>
-                <HousePlus />
-                <Link to={RouteIndex}>Home</Link>
-              </SidebarMenuButton>
+              <Link to={RouteIndex}>
+                <SidebarMenuButton>
+                  <HousePlus />
+                  <span>Home</span>
+                </SidebarMenuButton>
+              </Link>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton>
-                <ChartColumnStacked />
-                <Link to={RouteCategoryDetails}>Categories</Link>
-              </SidebarMenuButton>
+              <Link to={RouteCategoryDetails}>
+                <SidebarMenuButton>
+                  <ChartColumnStacked />
+                  <span>Categories</span>
+                </SidebarMenuButton>
+              </Link>
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton>
@@ -79,6 +82,5 @@ const AppSidebar = () => {
     </Sidebar>
   );
 };
-
 
 export default AppSidebar;

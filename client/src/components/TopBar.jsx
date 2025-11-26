@@ -14,6 +14,7 @@ import SearchBox from "./SearchBox";
 import Theme from "./Theme/Theme";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
+import { motion } from "framer-motion";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -42,11 +43,11 @@ const TopBar = () => {
   };
   return (
     <div className="flex justify-between items-center h-16 fixed w-full z-20 bg-background px-5 border-b border-border">
-      <div className="text-foreground">
+      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
         <Link to={RouteIndex}>
           <BookOpenText className="w-10 h-10 mx-2" />
         </Link>
-      </div>
+      </motion.div>
       <div className="w-[500px]">
         <SearchBox />
       </div>
