@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -7,28 +9,33 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { createCategory } from "@/redux/api/categoryAPI";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { SpinnerCustom } from "@/components/ui/spinner";
+import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import slugify from "slugify";
 import { toast } from "sonner";
-import z from "zod";
-import { Button } from "../ui/button";
-import { Card } from "../ui/card";
-import { SpinnerCustom } from "../ui/spinner";
-const AddCategory = () => {
+import { z } from "zod";
+
+const AddBlog = () => {
   const dispatch = useDispatch();
 
   const { loading, error } = useSelector((state) => state.category);
 
   // this is the formschema
   const formSchema = z.object({
-    name: z.string().min(3, {
+    category: z.string().min(3, {
+      message: "Fullname must be at least 3 characters long",
+    }),
+    title: z.string().min(3, {
       message: "Fullname must be at least 3 characters long",
     }),
     slug: z.string().min(3, {
+      message: "Slug must be at least 3 characters long",
+    }),
+    description: z.string().min(3, {
       message: "Slug must be at least 3 characters long",
     }),
   });
@@ -37,15 +44,17 @@ const AddCategory = () => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      category: "",
+      title: "",
       slug: "",
+      description: "",
     },
   });
 
   useEffect(() => {
-    const categoryName = form.watch("name");
-    if (categoryName) {
-      const slug = slugify(categoryName, { lower: true });
+    const blogTitle = form.watch("title");
+    if (blogTitle) {
+      const slug = slugify(blogTitle, { lower: true });
       form.setValue("slug", slug);
     }
   });
@@ -62,16 +71,13 @@ const AddCategory = () => {
       });
     form.reset();
   }
-
   return (
     <div className="flex justify-center items-center min-h-[80vh] bg-background">
       <Card className="w-full max-w-xl p-8 rounded-2xl shadow-lg border border-border/40 backdrop-blur-sm">
         <div className="mb-6 text-center">
-          <h1 className="text-2xl font-bold text-foreground">
-            Create Category
-          </h1>
+          <h1 className="text-2xl font-bold text-foreground">Create Blog</h1>
           <p className="text-muted-foreground text-sm">
-            Add a new category to organize your blog posts.
+            Create a new blog post
           </p>
         </div>
 
@@ -79,19 +85,40 @@ const AddCategory = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-4">
               <h2 className="text-lg font-semibold text-foreground">
-                Category Details
+                Blog Details
               </h2>
-
-              {/* Category Name */}
+              {/* Category */}
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>Category</FormLabel>
+                    <FormControl>
+                      <Select>
+                        <SelectTrigger className="w-[180px]">
+                          <SelectValue placeholder="Select" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="light">Light</SelectItem>
+
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* Title */}
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Title</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter category name"
+                        placeholder="Enter title"
                         {...field}
                         className="bg-input border border-border focus:ring-2 focus:ring-primary"
                       />
@@ -100,7 +127,6 @@ const AddCategory = () => {
                   </FormItem>
                 )}
               />
-
               {/* Slug */}
               <FormField
                 control={form.control}
@@ -114,6 +140,24 @@ const AddCategory = () => {
                         placeholder="auto-generated slug"
                         {...field}
                         className="bg-muted border border-border text-muted-foreground cursor-not-allowed"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* Description */}
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Enter description"
+                        {...field}
+                        className="bg-input border border-border focus:ring-2 focus:ring-primary"
                       />
                     </FormControl>
                     <FormMessage />
@@ -136,4 +180,4 @@ const AddCategory = () => {
   );
 };
 
-export default AddCategory;
+export default AddBlog;

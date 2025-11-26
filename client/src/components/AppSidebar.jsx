@@ -1,4 +1,4 @@
-import { RouteCategoryDetails, RouteIndex } from "@/helpers/RouteName";
+import { RouteBlog, RouteCategoryDetails, RouteIndex } from "@/helpers/RouteName";
 import {
   BookOpenText,
   ChartColumnStacked,
@@ -46,22 +46,12 @@ const AppSidebar = () => {
               </Link>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton>
-                <Rss />
-                <Link to="/">Blogs</Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton>
-                <MessageCircle />
-                <Link to="/">Comments</Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton>
-                <User />
-                <Link to="/">Users</Link>
-              </SidebarMenuButton>
+              <Link to={RouteBlog}>
+                <SidebarMenuButton>
+                  <Rss />
+                  <span>Blogs</span>
+                </SidebarMenuButton>
+              </Link>
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>
