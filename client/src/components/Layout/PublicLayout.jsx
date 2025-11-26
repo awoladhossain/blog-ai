@@ -1,17 +1,12 @@
 import { Button } from "@/components/ui/button";
-import {
-  RouteIndex,
-  RouteSignin,
-  RouteSignup,
-  RouteWelcome,
-} from "@/helpers/RouteName";
+import { RouteIndex, RouteSignin, RouteSignup, RouteWelcome } from "@/helpers/RouteName";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Theme from "../Theme/Theme";
 
 const PublicLayout = () => {
   return (
-    <div className="min-h-screen bg-background dark:bg-gradient-to-br dark:from-background dark:via-card dark:to-background text-foreground flex flex-col transition-colors duration-300">
+    <div className="min-h-screen bg-background dark:bg-linear-to-br dark:from-background dark:via-card dark:to-background text-foreground flex flex-col transition-colors duration-300">
       <header className="p-4 md:p-6 flex justify-between items-center bg-card/50 dark:bg-card/50 backdrop-blur-sm border-b border-border">
         <Link to={RouteWelcome} className="flex items-center space-x-2">
           <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
