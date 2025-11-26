@@ -31,7 +31,19 @@ export const addCategory = catchAsync(async (req, res, next) => {
   );
 });
 
-export const showCategory = catchAsync(async (req, res, next) => {});
+export const showCategoryById = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+  const category = await Category.findById(id);
+  if (!category) {
+    return next(new AppError("Category not found", StatusCodes.NOT_FOUND));
+  }
+  return successResponse(
+    res,
+    StatusCodes.OK,
+    "Category found successfully",
+    category
+  );
+});
 export const showAllCategory = catchAsync(async (req, res, next) => {
   const category = await Category.find().sort({ createdAt: -1 });
 
@@ -45,5 +57,34 @@ export const showAllCategory = catchAsync(async (req, res, next) => {
     category
   );
 });
-export const updateCategory = catchAsync(async (req, res, next) => {});
-export const deleteCategory = catchAsync(async (req, res, next) => {});
+export const updateCategory = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+  const { name, slug } = req.body;
+  const category = await Category.findByIdAndUpdate(
+    id,
+    { name, slug },
+    { new: true }
+  );
+  if (!category) {
+    return next(new AppError("Category not found", StatusCodes.NOT_FOUND));
+  }
+  return successResponse(
+    res,
+    StatusCodes.OK,
+    "Category updated successfully",
+    category
+  );
+});
+export const deleteCategory = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+  const category = await Category.findByIdAndDelete(id);
+  if (!category) {
+    return next(new AppError("Category not found", StatusCodes.NOT_FOUND));
+  }
+  return successResponse(
+    res,
+    StatusCodes.OK,
+    "Category deleted successfully",
+    category
+  );
+});

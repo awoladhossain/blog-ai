@@ -3,14 +3,14 @@ import {
   addCategory,
   deleteCategory,
   showAllCategory,
-  showCategory,
+  showCategoryById,
   updateCategory,
 } from "../controllers/category.controller.js";
 const router = express.Router();
 
 router.post("/add", addCategory);
 router.put("/update/:id", updateCategory);
-router.get("/:id", showCategory);
+router.get("/:id", showCategoryById);
 router.delete("/:id", deleteCategory);
 router.get("/", showAllCategory);
 
