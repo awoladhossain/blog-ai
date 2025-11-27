@@ -17,11 +17,9 @@ export const getUserByID = catchAsync(async (req, res, next) => {
 });
 
 export const updateUserProfile = catchAsync(async (req, res, next) => {
-  console.log(req.file);
-  console.log(req.body);
   const { userId } = req.params;
-
   const user = await User.findById(userId);
+  
   if (!user) {
     return next(new AppError("User not found", StatusCodes.NOT_FOUND));
   }

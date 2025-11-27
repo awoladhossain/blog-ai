@@ -5,6 +5,7 @@ import morgan from "morgan";
 import connectDB from "./database/db.js";
 import errorMiddleware from "./middlewares/error.middleware.js";
 import authRouters from "./routes/auth.routes.js";
+import blogRouters from "./routes/blog.routes.js";
 import categoryRouters from "./routes/category.routes.js";
 import userRouters from "./routes/user.routes.js";
 
@@ -38,6 +39,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRouters);
 app.use("/api/users", userRouters);
 app.use("/api/categories", categoryRouters);
+app.use("/api/blogs", blogRouters);
 
 const PORT = process.env.PORT || 6000;
 app.listen(PORT, () => {
