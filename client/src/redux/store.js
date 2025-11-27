@@ -27,12 +27,13 @@ const themePersistConfig = {
 
 const persistedAuthReducer = persistReducer(persistConfig, authReducer);
 const persistedThemeReducer = persistReducer(themePersistConfig, themeReducer);
+const persistedUserReducer = persistReducer(persistConfig, userReducer);
 
 export const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
     theme: persistedThemeReducer,
-    user: userReducer,
+    user: persistedUserReducer,
     category: categoryReducer,
   },
   middleware: (getDefaultMiddleware) => {

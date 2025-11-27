@@ -24,11 +24,10 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 
-const TopBar = () => {
+const TopBar = ({ profileUser }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isAuthenticated, user } = useSelector((state) => state.auth || {});
-  const { user: profileUser, loading } = useSelector((state) => state.user);
 
   const handleLogout = () => {
     dispatch(logoutUser())

@@ -19,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SpinnerCustom } from "@/components/ui/spinner";
+import { createBlog } from "@/redux/api/blogAPI";
 import { getAllCategories } from "@/redux/api/categoryAPI";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Camera } from "lucide-react";
@@ -31,10 +32,12 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 const AddBlog = () => {
+  
   const dispatch = useDispatch();
   const { category: categories, loading } = useSelector(
     (state) => state.category
   );
+  const { user } = useSelector((state) => state.auth);
 
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [avatarFile, setAvatarFile] = useState(null);
@@ -80,21 +83,47 @@ const AddBlog = () => {
     return () => subscription.unsubscribe();
   }, [form]);
 
-  const onSubmit = (values) => {
-    console.log(values);
-    // Replace this with your blog creation API
-    // dispatch(createCategory(values))
-    //   .unwrap()
-    //   .then((res) => {
-    //     toast.success(res.message || "Blog created successfully");
-    //     form.reset();
-    //     setAvatarPreview(null);
-    //     setAvatarFile(null);
-    //   })
-    //   .catch((err) => {
-    //     toast.error(err || "Blog creation failed");
-    //   });
+  const handleChangeData = (event, editor) => {
+    const data = editor.getData();
+    // console.log(data);
+    form.setValue("description", data);
   };
+const onSubmit = (values) => {
+  // Validate that an image was selected
+  if (!avatarFile) {
+    toast.error("Please upload a featured image");
+    return;
+  }
+
+  const formData = new FormData();
+
+  // Add the file
+  formData.append("avatar", avatarFile);
+
+  // Add JSON data as a single field
+  formData.append(
+    "data",
+    JSON.stringify({
+      category: values.category,
+      title: values.title,
+      slug: values.slug,
+      description: values.description,
+      author: user._id,
+    })
+  );
+
+  dispatch(createBlog(formData))
+    .unwrap()
+    .then((res) => {
+      toast.success(res.message);
+      // Optional: Reset form and image
+      form.reset();
+      setAvatarFile(null);
+      setAvatarPreview(null);
+    })
+    .catch((err) => toast.error(err || "Failed to create blog"));
+};
+
 
   return (
     <div className="flex justify-center items-center min-h-[80vh] bg-background p-4 my-20">
@@ -130,7 +159,7 @@ const AddBlog = () => {
                         </SelectTrigger>
                         <SelectContent>
                           {categories?.map((cat) => (
-                            <SelectItem key={cat._id} value={cat.name}>
+                            <SelectItem key={cat._id} value={cat._id}>
                               {cat.name}
                             </SelectItem>
                           ))}
@@ -217,7 +246,12 @@ const AddBlog = () => {
                     <FormControl>
                       <div className="w-full max-w-[850px]">
                         <div className="border border-border rounded-lg overflow-hidden">
-                          <Editor props={{ initialData: field.value || "" }} />
+                          <Editor
+                            props={{
+                              initialData: field.value || "",
+                              onChange: handleChangeData,
+                            }}
+                          />
                         </div>
                       </div>
                     </FormControl>
