@@ -1,3 +1,5 @@
+import Editor from "@/components/Editor";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
@@ -9,38 +11,54 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { SpinnerCustom } from "@/components/ui/spinner";
-import { Textarea } from "@/components/ui/textarea";
+import { getAllCategories } from "@/redux/api/categoryAPI";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { Camera } from "lucide-react";
+import { useEffect, useState } from "react";
+import Dropzone from "react-dropzone";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import slugify from "slugify";
 import { toast } from "sonner";
 import { z } from "zod";
 
 const AddBlog = () => {
   const dispatch = useDispatch();
+  const { category: categories, loading } = useSelector(
+    (state) => state.category
+  );
 
-  const { loading, error } = useSelector((state) => state.category);
+  const [avatarPreview, setAvatarPreview] = useState(null);
+  const [avatarFile, setAvatarFile] = useState(null);
 
-  // this is the formschema
+  const handleFileUpload = (files) => {
+    const file = files[0];
+    const preview = URL.createObjectURL(file);
+    setAvatarFile(file);
+    setAvatarPreview(preview);
+  };
+
+  useEffect(() => {
+    dispatch(getAllCategories());
+  }, [dispatch]);
+
   const formSchema = z.object({
-    category: z.string().min(3, {
-      message: "Fullname must be at least 3 characters long",
-    }),
-    title: z.string().min(3, {
-      message: "Fullname must be at least 3 characters long",
-    }),
-    slug: z.string().min(3, {
-      message: "Slug must be at least 3 characters long",
-    }),
-    description: z.string().min(3, {
-      message: "Slug must be at least 3 characters long",
-    }),
+    category: z.string().min(1, "Please select a category"),
+    title: z.string().min(3, "Title must be at least 3 characters long"),
+    slug: z.string().min(3, "Slug must be at least 3 characters long"),
+    description: z
+      .string()
+      .min(3, "Description must be at least 3 characters long"),
   });
 
-  // now initialzing the form schema or define the form
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -51,29 +69,36 @@ const AddBlog = () => {
     },
   });
 
+  // Auto-generate slug from title
   useEffect(() => {
-    const blogTitle = form.watch("title");
-    if (blogTitle) {
-      const slug = slugify(blogTitle, { lower: true });
-      form.setValue("slug", slug);
-    }
-  });
-  // define a submit handler
-  function onSubmit(values) {
+    const subscription = form.watch((value, { name }) => {
+      if (name === "title" && value.title) {
+        const slug = slugify(value.title, { lower: true });
+        form.setValue("slug", slug);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [form]);
+
+  const onSubmit = (values) => {
     console.log(values);
-    dispatch(createCategory(values))
-      .unwrap()
-      .then((res) => {
-        toast.success(res.message || "Category created successfully");
-      })
-      .catch((err) => {
-        toast.error(err || "Category creation failed");
-      });
-    form.reset();
-  }
+    // Replace this with your blog creation API
+    // dispatch(createCategory(values))
+    //   .unwrap()
+    //   .then((res) => {
+    //     toast.success(res.message || "Blog created successfully");
+    //     form.reset();
+    //     setAvatarPreview(null);
+    //     setAvatarFile(null);
+    //   })
+    //   .catch((err) => {
+    //     toast.error(err || "Blog creation failed");
+    //   });
+  };
+
   return (
-    <div className="flex justify-center items-center min-h-[80vh] bg-background">
-      <Card className="w-full max-w-xl p-8 rounded-2xl shadow-lg border border-border/40 backdrop-blur-sm">
+    <div className="flex justify-center items-center min-h-[80vh] bg-background p-4 my-20">
+      <Card className="w-full max-w-4xl p-8 rounded-2xl shadow-lg border border-border/40 backdrop-blur-sm">
         <div className="mb-6 text-center">
           <h1 className="text-2xl font-bold text-foreground">Create Blog</h1>
           <p className="text-muted-foreground text-sm">
@@ -87,21 +112,28 @@ const AddBlog = () => {
               <h2 className="text-lg font-semibold text-foreground">
                 Blog Details
               </h2>
+
               {/* Category */}
               <FormField
                 control={form.control}
-                name="name"
+                name="category" // ← keep the correct name
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Category</FormLabel>
                     <FormControl>
-                      <Select>
+                      <Select
+                        {...field} // ← spread the whole field object
+                        onValueChange={field.onChange} // optional, but makes it explicit
+                      >
                         <SelectTrigger className="w-[180px]">
                           <SelectValue placeholder="Select" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="light">Light</SelectItem>
-
+                          {categories?.map((cat) => (
+                            <SelectItem key={cat._id} value={cat.name}>
+                              {cat.name}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -109,10 +141,11 @@ const AddBlog = () => {
                   </FormItem>
                 )}
               />
+
               {/* Title */}
               <FormField
                 control={form.control}
-                name="name"
+                name="title"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Title</FormLabel>
@@ -127,6 +160,7 @@ const AddBlog = () => {
                   </FormItem>
                 )}
               />
+
               {/* Slug */}
               <FormField
                 control={form.control}
@@ -136,9 +170,9 @@ const AddBlog = () => {
                     <FormLabel>Slug</FormLabel>
                     <FormControl>
                       <Input
-                        readOnly
                         placeholder="auto-generated slug"
                         {...field}
+                        readOnly
                         className="bg-muted border border-border text-muted-foreground cursor-not-allowed"
                       />
                     </FormControl>
@@ -146,19 +180,46 @@ const AddBlog = () => {
                   </FormItem>
                 )}
               />
+
+              {/* Feature Image */}
+              <div className="flex flex-col items-center gap-2 mt-4">
+                <span className="text-sm text-muted-foreground">
+                  Feature Image
+                </span>
+                <Dropzone onDrop={handleFileUpload}>
+                  {({ getRootProps, getInputProps }) => (
+                    <div
+                      {...getRootProps()}
+                      className="cursor-pointer relative w-36 h-36 border-2 border-dashed border-gray-300 rounded-xl flex justify-center items-center"
+                    >
+                      <input {...getInputProps()} />
+                      {avatarPreview ? (
+                        <Avatar className="w-36 h-36">
+                          <AvatarImage src={avatarPreview} />
+                          <AvatarFallback>U</AvatarFallback>
+                        </Avatar>
+                      ) : (
+                        <Camera className="w-6 h-6 text-gray-500" />
+                      )}
+                    </div>
+                  )}
+                </Dropzone>
+              </div>
+
               {/* Description */}
+
               <FormField
                 control={form.control}
-                name="name"
+                name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>Blog Content</FormLabel>
                     <FormControl>
-                      <Textarea
-                        placeholder="Enter description"
-                        {...field}
-                        className="bg-input border border-border focus:ring-2 focus:ring-primary"
-                      />
+                      <div className="w-full max-w-[850px]">
+                        <div className="border border-border rounded-lg overflow-hidden">
+                          <Editor props={{ initialData: field.value || "" }} />
+                        </div>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
