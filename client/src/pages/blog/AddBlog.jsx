@@ -1,3 +1,4 @@
+import BlogEditor from "@/components/BlogEditor";
 import Editor from "@/components/Editor";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SpinnerCustom } from "@/components/ui/spinner";
+import { RouteBlog } from "@/helpers/RouteName";
 import { createBlog } from "@/redux/api/blogAPI";
 import { getAllCategories } from "@/redux/api/categoryAPI";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,16 +29,18 @@ import { useEffect, useState } from "react";
 import Dropzone from "react-dropzone";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import slugify from "slugify";
 import { toast } from "sonner";
 import { z } from "zod";
 
 const AddBlog = () => {
-  
+
   const dispatch = useDispatch();
   const { category: categories, loading } = useSelector(
     (state) => state.category
   );
+  const navigate = useNavigate()
   const { user } = useSelector((state) => state.auth);
 
   const [avatarPreview, setAvatarPreview] = useState(null);
@@ -120,6 +124,7 @@ const onSubmit = (values) => {
       form.reset();
       setAvatarFile(null);
       setAvatarPreview(null);
+      navigate(RouteBlog);
     })
     .catch((err) => toast.error(err || "Failed to create blog"));
 };
@@ -246,7 +251,7 @@ const onSubmit = (values) => {
                     <FormControl>
                       <div className="w-full max-w-[850px]">
                         <div className="border border-border rounded-lg overflow-hidden">
-                          <Editor
+                          <BlogEditor
                             props={{
                               initialData: field.value || "",
                               onChange: handleChangeData,

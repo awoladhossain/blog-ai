@@ -15,3 +15,12 @@ export const createBlog = createAsyncThunk("blog/create", async(data, thunkAPI)=
     return thunkAPI.rejectWithValue(error.response?.data?.message);
   }
 })
+
+export const getAllBlogs = createAsyncThunk("blog/getAll", async(_, thunkAPI)=>{
+  try {
+    const response = await axiosInstance.get("/blogs/");
+    return response.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response?.data?.message);
+  }
+})

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createBlog } from "../api/blogAPI";
+import { createBlog, getAllBlogs } from "../api/blogAPI";
 
 const initialState = {
   blogs: [],
@@ -23,6 +23,19 @@ const blogSlice = createSlice({
         state.error = null;
       })
       .addCase(createBlog.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getAllBlogs.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getAllBlogs.fulfilled, (state, action) => {
+        state.loading = false;
+        state.blogs = action.payload.data;
+        state.error = null;
+      })
+      .addCase(getAllBlogs.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
