@@ -11,67 +11,67 @@ generation**.
 
 ### 🔐 Authentication
 
--   JWT-based register & login\
--   Google OAuth\
--   Protected routes (client & server)\
--   Role system: `user` & `admin`\
+-   JWT-based register & login
+-   Google OAuth
+-   Protected routes (client & server)
+-   Role system: `user` & `admin`
 -   Redux Persist for session continuity
 
 ### 📝 Blogging
 
--   Create, Read, Update, Delete blogs\
--   CKEditor 5 rich-text editor\
--   Slug generation\
--   Category-based blog filtering\
--   Search functionality\
--   Like/Unlike blogs\
+-   Create, Read, Update, Delete blogs
+-   CKEditor 5 rich-text editor
+-   Slug generation
+-   Category-based blog filtering
+-   Search functionality
+-   Like/Unlike blogs
 -   Comment system
 
 ### 🗂 Category Management
 
--   Admin-protected category CRUD\
+-   Admin-protected category CRUD
 -   Slug-based categorization
 
 ### 💬 Real-Time Chat (Socket.io)
 
--   User ↔ User chat\
--   User ↔ Admin support chat\
--   Online user presence\
--   Message delivery indicators\
+-   User ↔ User chat
+-   User ↔ Admin support chat
+-   Online user presence
+-   Message delivery indicators
 -   Scalable event-driven architecture
 
 ### 🤖 Gen‑AI Features
 
--   AI Content Generation (titles, paragraphs, summaries)\
--   AI Image Generation (via OpenAI / Replicate / Cloud API)\
--   Smart blog suggestions\
+-   AI Content Generation (titles, paragraphs, summaries)
+-   AI Image Generation (via OpenAI / Replicate / Cloud API)
+-   Smart blog suggestions
 -   Optional moderation using AI
 
 ### 📸 Media & Uploads
 
--   Cloudinary integration\
--   Multer upload middleware\
+-   Cloudinary integration
+-   Multer upload middleware
 -   React Dropzone on frontend
 
 ### 🧩 Frontend Stack
 
--   React 19\
--   Vite\
--   React Router v7\
--   Redux Toolkit + Redux Persist\
--   TailwindCSS 4\
--   Lucide Icons\
+-   React 19
+-   Vite
+-   React Router v7
+-   Redux Toolkit + Redux Persist
+-   TailwindCSS 4
+-   Lucide Icons
 -   Sonner Toasts
 
 ### 🛠 Backend Stack
 
--   Node.js\
--   Express 5\
--   MongoDB + Mongoose\
--   JWT Auth\
--   Multer + Cloudinary\
--   Socket.io Server\
--   Bcrypt\
+-   Node.js
+-   Express 5
+-   MongoDB + Mongoose
+-   JWT Auth
+-   Multer + Cloudinary
+-   Socket.io Server
+-   Bcrypt
 -   Cookie Parser
 
 ------------------------------------------------------------------------
@@ -141,15 +141,15 @@ npm run dev
 
 ### Server
 
--   Initializes Socket.io\
--   Stores active users\
--   Handles private messages\
+-   Initializes Socket.io
+-   Stores active users
+-   Handles private messages
 -   Emits new message events
 
 ### Client
 
--   Connects using auth token\
--   Handles real-time chats\
+-   Connects using auth token
+-   Handles real-time chats
 -   Tracks online users
 
 ------------------------------------------------------------------------
@@ -158,29 +158,29 @@ npm run dev
 
 ### AI Content Generation
 
--   Title generator\
--   Paragraph generator\
+-   Title generator
+-   Paragraph generator
 -   Full blog draft generation
 
 ### AI Image Generation
 
--   Prompt-based image generation\
+-   Prompt-based image generation
 -   Integration via your chosen model
 
 ------------------------------------------------------------------------
 
 ## 📦 Deployment (Vercel / Render)
 
-1.  Deploy **client** on Vercel\
-2.  Deploy **server** on Render / Railway\
-3.  Add required environment variables\
+1.  Deploy **client** on Vercel
+2.  Deploy **server** on Render / Railway
+3.  Add required environment variables
 4.  Update CORS + Socket.io origins
 
 ------------------------------------------------------------------------
 
 ## 🤝 Contributing
 
-PRs are welcome!\
+PRs are welcome!
 Follow conventional commits and create feature branches.
 
 ------------------------------------------------------------------------
@@ -193,7 +193,7 @@ MIT License.
 
 ## 👤 Developer
 
-**Awolad Hossain**\
+**Awolad Hossain**
 For support, open an issue or contact via GitHub.
 
 ------------------------------------------------------------------------
