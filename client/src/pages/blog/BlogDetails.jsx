@@ -1,18 +1,25 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { SpinnerCustom } from "@/components/ui/spinner";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { RouteBlogAdd, RouteBlogEdit } from "@/helpers/RouteName";
-import { getAllBlogs } from "@/redux/api/blogAPI";
+import { deleteBlog, getAllBlogs } from "@/redux/api/blogAPI";
 import { SquarePen, Trash } from "lucide-react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 
 const BlogDetails = () => {
   const dispatch = useDispatch();
   const { blogs, loading, error } = useSelector((state) => state.blog);
-
 
   useEffect(() => {
     dispatch(getAllBlogs());
@@ -22,6 +29,19 @@ const BlogDetails = () => {
     return <SpinnerCustom />;
   }
 
+  const handleDeleteBlog = (id) => {
+    console.log(id);
+    dispatch(deleteBlog(id))
+      .unwrap()
+      .then((res) => {
+        toast.success(res.message || "Blog deleted successfully");
+      })
+      .catch((err) => {
+        // Extract the message from the error object
+        const errorMessage = err?.message || err || "Delete failed";
+        toast.error(errorMessage);
+      });
+  };
   return (
     <div className="pt-20 px-10">
       <Card className="shadow-sm border border-border">
@@ -95,7 +115,7 @@ const BlogDetails = () => {
                       </Link>
 
                       <Button
-                        onClick={() => console.log("Delete blog:", blog._id)}
+                        onClick={() => handleDeleteBlog(blog._id)}
                         variant="destructive"
                         size="sm"
                         className="hover:bg-red-600 ursor-pointer"

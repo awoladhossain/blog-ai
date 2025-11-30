@@ -1,5 +1,4 @@
 import BlogEditor from "@/components/BlogEditor";
-import Editor from "@/components/Editor";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -35,12 +34,11 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 const AddBlog = () => {
-
   const dispatch = useDispatch();
   const { category: categories, loading } = useSelector(
     (state) => state.category
   );
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
 
   const [avatarPreview, setAvatarPreview] = useState(null);
@@ -92,43 +90,42 @@ const AddBlog = () => {
     // console.log(data);
     form.setValue("description", data);
   };
-const onSubmit = (values) => {
-  // Validate that an image was selected
-  if (!avatarFile) {
-    toast.error("Please upload a featured image");
-    return;
-  }
+  const onSubmit = (values) => {
+    // Validate that an image was selected
+    if (!avatarFile) {
+      toast.error("Please upload a featured image");
+      return;
+    }
 
-  const formData = new FormData();
+    const formData = new FormData();
 
-  // Add the file
-  formData.append("avatar", avatarFile);
+    // Add the file
+    formData.append("avatar", avatarFile);
 
-  // Add JSON data as a single field
-  formData.append(
-    "data",
-    JSON.stringify({
-      category: values.category,
-      title: values.title,
-      slug: values.slug,
-      description: values.description,
-      author: user._id,
-    })
-  );
+    // Add JSON data as a single field
+    formData.append(
+      "data",
+      JSON.stringify({
+        category: values.category,
+        title: values.title,
+        slug: values.slug,
+        description: values.description,
+        author: user._id,
+      })
+    );
 
-  dispatch(createBlog(formData))
-    .unwrap()
-    .then((res) => {
-      toast.success(res.message);
-      // Optional: Reset form and image
-      form.reset();
-      setAvatarFile(null);
-      setAvatarPreview(null);
-      navigate(RouteBlog);
-    })
-    .catch((err) => toast.error(err || "Failed to create blog"));
-};
-
+    dispatch(createBlog(formData))
+      .unwrap()
+      .then((res) => {
+        toast.success(res.message);
+        // Optional: Reset form and image
+        form.reset();
+        setAvatarFile(null);
+        setAvatarPreview(null);
+        navigate(RouteBlog);
+      })
+      .catch((err) => toast.error(err || "Failed to create blog"));
+  };
 
   return (
     <div className="flex justify-center items-center min-h-[80vh] bg-background p-4 my-20">

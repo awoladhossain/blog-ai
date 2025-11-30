@@ -1,13 +1,18 @@
-import { RouteBlog, RouteCategoryDetails, RouteIndex } from "@/helpers/RouteName";
+import {
+  RouteBlog,
+  RouteCategoryDetails,
+  RouteIndex,
+} from "@/helpers/RouteName";
+import { getAllCategories } from "@/redux/api/categoryAPI";
 import {
   BookOpenText,
   ChartColumnStacked,
   HousePlus,
   LayoutList,
-  MessageCircle,
   Rss,
-  User,
 } from "lucide-react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   Sidebar,
@@ -21,6 +26,15 @@ import {
 } from "./ui/sidebar";
 
 const AppSidebar = () => {
+  const dispatch = useDispatch();
+  const { category: categories, loading } = useSelector(
+    (state) => state.category
+  );
+  useEffect(() => {
+    dispatch(getAllCategories());
+  }, [dispatch]);
+  console.log(categories);
+
   return (
     <Sidebar>
       <SidebarHeader>
@@ -59,16 +73,21 @@ const AppSidebar = () => {
         <SidebarGroup>
           <SidebarGroupLabel>Categories</SidebarGroupLabel>
           <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton>
-                <LayoutList />
-                <Link to="/">Category Items</Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
+            {categories &&
+              categories.length > 0 &&
+              categories.map((category) => {
+                return (
+                  <SidebarMenuItem key={category._id}>
+                    <SidebarMenuButton>
+                      <LayoutList />
+                      <Link to={RouteIndex}>{category.name}</Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
-      {/* <SidebarFooter /> */}
     </Sidebar>
   );
 };

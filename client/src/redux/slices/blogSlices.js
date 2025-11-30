@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createBlog, getAllBlogs } from "../api/blogAPI";
+import {
+  createBlog,
+  deleteBlog,
+  getAllBlogs,
+  singleBlog,
+  updateBlog,
+} from "../api/blogAPI";
 
 const initialState = {
   blogs: [],
@@ -36,6 +42,55 @@ const blogSlice = createSlice({
         state.error = null;
       })
       .addCase(getAllBlogs.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(deleteBlog.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteBlog.fulfilled, (state, action) => {
+        state.loading = false;
+        // Use the ID from meta.arg (the original argument passed to the thunk)
+        state.blogs = state.blogs.filter(
+          (blog) => blog._id !== action.meta.arg
+        );
+        state.error = null;
+      })
+      .addCase(deleteBlog.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(singleBlog.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(singleBlog.fulfilled, (state, action) => {
+        state.loading = false;
+        state.singleBlog = action.payload.data;
+        state.error = null;
+      })
+      .addCase(singleBlog.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(updateBlog.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateBlog.fulfilled, (state, action) => {
+        state.loading = false;
+        // Update the blog in the array
+        const index = state.blogs.findIndex(
+          (blog) => blog._id === action.payload.data._id
+        );
+        if (index !== -1) {
+          state.blogs[index] = action.payload.data;
+        }
+        state.singleBlog = action.payload.data;
+        state.error = null;
+      })
+      .addCase(updateBlog.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
