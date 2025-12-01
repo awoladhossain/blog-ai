@@ -15,7 +15,6 @@ const Layout = () => {
         <div className="w-full min-h-[calc(100vh-45px)]  ">
           <Outlet />
         </div>
-
         {/* footer */}
         <Footer />
       </main>

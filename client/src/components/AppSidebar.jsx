@@ -5,10 +5,10 @@ import {
 } from "@/helpers/RouteName";
 import { getAllCategories } from "@/redux/api/categoryAPI";
 import {
+  BookmarkPlus,
   BookOpenText,
   ChartColumnStacked,
   HousePlus,
-  LayoutList,
   Rss,
 } from "lucide-react";
 import { useEffect } from "react";
@@ -33,7 +33,7 @@ const AppSidebar = () => {
   useEffect(() => {
     dispatch(getAllCategories());
   }, [dispatch]);
-  console.log(categories);
+  // console.log(categories);
 
   return (
     <Sidebar>
@@ -79,7 +79,7 @@ const AppSidebar = () => {
                 return (
                   <SidebarMenuItem key={category._id}>
                     <SidebarMenuButton>
-                      <LayoutList />
+                      <BookmarkPlus />
                       <Link to={RouteIndex}>{category.name}</Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

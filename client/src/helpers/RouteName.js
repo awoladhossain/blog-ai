@@ -16,12 +16,20 @@ export const RouteEditCategory = (category_id) => {
     return `/app/categories/edit/:category_id`;
   }
 };
-export const RouteBlog="/app/blog"
-export const RouteBlogAdd="/app/blog/add"
-export const RouteBlogEdit =(blog_id)=>{
-  if(blog_id){
-    return `/app/blog/edit/${blog_id}`
-  }else{
-    return `/app/blog/edit/:blog_id`
+export const RouteBlog = "/app/blog";
+export const RouteBlogAdd = "/app/blog/add";
+export const RouteBlogEdit = (blog_id) => {
+  if (blog_id) {
+    return `/app/blog/edit/${blog_id}`;
+  } else {
+    return `/app/blog/edit/:blog_id`;
   }
-}
+};
+
+export const RouteBlogDetails = (category, blog) => {
+  if (!category && !blog) {
+    return `/app/:category/:blog`;
+  }else{
+    return `/app/${category}/${blog}`;
+  }
+};
