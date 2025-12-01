@@ -46,7 +46,7 @@ export const addBlog = catchAsync(async (req, res, next) => {
 
 export const showAllBlogs = catchAsync(async (req, res, next) => {
   const blogs = await Blog.find()
-    .populate("author", "fullname")
+    .populate("author", "fullname avatar role")
     .populate("category", "name")
     .sort({ createdAt: -1 })
     .lean()
