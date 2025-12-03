@@ -47,7 +47,7 @@ export const addBlog = catchAsync(async (req, res, next) => {
 export const showAllBlogs = catchAsync(async (req, res, next) => {
   const blogs = await Blog.find()
     .populate("author", "fullname avatar role")
-    .populate("category", "name")
+    .populate("category", "name slug")
     .sort({ createdAt: -1 })
     .lean()
     .exec();
@@ -57,8 +57,8 @@ export const showAllBlogs = catchAsync(async (req, res, next) => {
 export const getBlogById = catchAsync(async (req, res, next) => {
   const id = req.params.id;
   const blog = await Blog.findById(id)
-    .populate("author", "fullname")
-    .populate("category", "name")
+    .populate("author", "fullname avatar role")
+    .populate("category", "name slug")
     .lean()
     .exec();
   if (!blog) {
@@ -155,3 +155,5 @@ export const deleteBlog = catchAsync(async (req, res, next) => {
     blog
   );
 });
+
+
