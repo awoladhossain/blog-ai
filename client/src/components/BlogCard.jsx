@@ -1,10 +1,13 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { RouteBlogDetails } from "@/helpers/RouteName";
 import { motion } from "framer-motion";
 import { BadgeCheck } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const BlogCard = ({ props }) => {
+  console.log(props);
   const descriptionPreview =
     props.description.length > 120
       ? props.description.slice(0, 120) + "..."
@@ -59,9 +62,13 @@ const BlogCard = ({ props }) => {
             {descriptionPreview}
           </p>
 
-          <button className="text-blue-600 dark:text-blue-400 text-sm font-medium hover:underline">
-            Read More
-          </button>
+          <Link
+            to={RouteBlogDetails(props.category.slug, props.slug, props._id)}
+          >
+            <button className="text-blue-600 dark:text-blue-400 text-sm font-medium hover:underline">
+              Read More
+            </button>
+          </Link>
         </CardContent>
       </Card>
     </motion.div>

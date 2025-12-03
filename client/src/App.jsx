@@ -8,6 +8,7 @@ import {
   RouteAddCategory,
   RouteBlog,
   RouteBlogAdd,
+  RouteBlogDetails,
   RouteBlogEdit,
   RouteCategoryDetails,
   RouteEditCategory,
@@ -17,13 +18,14 @@ import {
   RouteSignup,
   RouteWelcome,
 } from "./helpers/RouteName";
+import AddBlog from "./pages/blog/AddBlog";
+import BlogDetails from "./pages/blog/BlogDetails";
+import EditBlog from "./pages/blog/EditBlog";
 import Index from "./pages/Index";
 import Profile from "./pages/Profile";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
-import AddBlog from "./pages/blog/AddBlog";
-import BlogDetails from "./pages/blog/BlogDetails";
-import EditBlog from "./pages/blog/EditBlog";
+import SingleBlogDetails from "./pages/SingleBlogDetails";
 
 const App = () => {
   return (
@@ -48,6 +50,8 @@ const App = () => {
           <Route path={RouteBlog} element={<BlogDetails />} />
           <Route path={RouteBlogAdd} element={<AddBlog />} />
           <Route path={RouteBlogEdit()} element={<EditBlog />} />
+          <Route path={RouteBlogDetails()} element={<SingleBlogDetails />} />
+          
         </Route>
       </Routes>
     </BrowserRouter>

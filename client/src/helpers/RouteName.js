@@ -26,10 +26,10 @@ export const RouteBlogEdit = (blog_id) => {
   }
 };
 
-export const RouteBlogDetails = (category, blog) => {
+export const RouteBlogDetails = (category, blog, blog_id) => {
   if (!category && !blog) {
-    return `/app/:category/:blog`;
+    return `/app/blog/:category/:blog/:blog_id`;
   }else{
-    return `/app/${category}/${blog}`;
+    return `/app/blog/${category}/${blog}/${blog_id}`;
   }
 };
