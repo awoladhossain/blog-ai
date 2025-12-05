@@ -7,7 +7,6 @@ import { BadgeCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const BlogCard = ({ props }) => {
-  console.log(props);
   const descriptionPreview =
     props.description.length > 120
       ? props.description.slice(0, 120) + "..."

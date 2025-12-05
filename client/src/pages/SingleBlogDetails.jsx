@@ -22,6 +22,7 @@ const SingleBlogDetails = () => {
     loading,
     error,
   } = useSelector((state) => state.blog);
+  const { comments } = useSelector((state) => state.comment);
 
   useEffect(() => {
     dispatch(singleBlog(blog_params.blog_id));
@@ -45,21 +46,23 @@ const SingleBlogDetails = () => {
         >
           {/* Blog Title */}
           <h1 className="text-4xl font-bold mb-4 leading-snug text-gray-900 dark:text-gray-100">
-            {blog.title}
+            {blog?.title}
           </h1>
 
           {/* Author Section */}
           <div className="flex justify-between items-center mt-6">
             <div className="flex items-center gap-4">
               <Avatar className="h-12 w-12">
-                <AvatarImage src={blog.author.avatar} />
+                <AvatarImage src={blog?.author?.avatar} />
                 <AvatarFallback>U</AvatarFallback>
               </Avatar>
 
               <div>
-                <p className="font-semibold text-lg">{blog.author.fullname}</p>
+                <p className="font-semibold text-lg">
+                  {blog?.author?.fullname}
+                </p>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Posted on {moment(blog.createdAt).format("DD MMM, YYYY")}
+                  Posted on {moment(blog?.createdAt).format("DD MMM, YYYY")}
                 </p>
               </div>
             </div>
@@ -67,7 +70,7 @@ const SingleBlogDetails = () => {
             {/* Placeholder Like/Comments */}
             <div className="flex items-center gap-4 text-gray-600 dark:text-gray-300">
               <p>❤️ 12</p>
-              <p>💬 5</p>
+              <p>💬 {comments.length}</p>
             </div>
           </div>
 
@@ -77,7 +80,7 @@ const SingleBlogDetails = () => {
             className="my-6 overflow-hidden rounded-xl"
           >
             <img
-              src={blog.featuredImage}
+              src={blog?.featuredImage}
               className="rounded-xl w-full object-cover transition-all duration-300"
               alt=""
             />
@@ -90,7 +93,7 @@ const SingleBlogDetails = () => {
             animate="animate"
             className="prose dark:prose-invert max-w-full leading-relaxed text-[17px]"
             dangerouslySetInnerHTML={{
-              __html: decode(blog.description) || "No description",
+              __html: decode(blog?.description) || "No description",
             }}
           ></motion.div>
 

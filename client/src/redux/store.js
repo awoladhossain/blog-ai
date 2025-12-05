@@ -15,6 +15,8 @@ import categoryReducer from "./slices/categorySlice";
 import themeReducer from "./slices/themeSlice";
 import userReducer from "./slices/userSlices";
 import blogReducer from "./slices/blogSlices";
+import commentReducer from "./slices/commentSlice";
+
 
 const persistConfig = {
   key: "auth",
@@ -37,6 +39,7 @@ export const store = configureStore({
     user: persistedUserReducer,
     category: categoryReducer,
     blog: blogReducer,
+    comment: commentReducer,
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware({
