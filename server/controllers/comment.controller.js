@@ -46,4 +46,22 @@ export const getAllComments = catchAsync(async (req, res, next) => {
     "Comments found successfully",
     comments
   );
-})
+});
+
+export const getCommentsByBlogId = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+
+  const comments = await Comment.find({ blogId: id })
+    .populate("author", "fullname avatar role")
+    .sort({ createdAt: -1 });
+
+  if (comments.length === 0) {
+    return next(new AppError("No comments found", StatusCodes.NOT_FOUND));
+  }
+  return successResponse(
+    res,
+    StatusCodes.OK,
+    "Comments found successfully",
+    comments
+  );
+});
