@@ -2,12 +2,14 @@ import Comments from "@/components/Comments";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SpinnerCustom } from "@/components/ui/spinner";
 import { singleBlog } from "@/redux/api/blogAPI";
+import { getBlogLikeCount, toggleBlogLike } from "@/redux/api/bloglikeaAPI";
 import { motion } from "framer-motion";
 import { decode } from "html-entities";
 import moment from "moment";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 const fadeIn = {
   initial: { opacity: 0, y: 40 },
@@ -17,22 +19,41 @@ const fadeIn = {
 const SingleBlogDetails = () => {
   const blog_params = useParams();
   const dispatch = useDispatch();
-  const {
-    singleBlog: blog,
-    loading,
-    error,
-  } = useSelector((state) => state.blog);
+  const { singleBlog: blog, loading } = useSelector((state) => state.blog);
   const { comments } = useSelector((state) => state.comment);
+  const { user } = useSelector((state) => state.auth);
+  const { totalLike } = useSelector((state) => state.blogLike);
+
+  const userId = user?._id;
 
   useEffect(() => {
     dispatch(singleBlog(blog_params.blog_id));
-  }, []);
+    dispatch(getBlogLikeCount(blog_params.blog_id));
+  }, [dispatch, blog_params.blog_id]);
 
   if (loading) return <SpinnerCustom />;
+
   // Filter comments by this blog
   const filteredComments = comments.filter(
     (c) => c.blogId === blog_params.blog_id
   );
+
+  const handleLike = async () => {
+    if (!userId) {
+      alert("Please login to like this post");
+      return;
+    }
+
+    // Toggle like
+    dispatch(
+      toggleBlogLike({
+        blogId: blog_params.blog_id,
+        userId,
+      })
+    ).unwrap()
+      .then((res) => toast.success(res.message || "Like toggled successfully"))
+      .catch((err) => toast.error(err || "Like failed"));
+  };
 
   return (
     <motion.div
@@ -71,10 +92,17 @@ const SingleBlogDetails = () => {
               </div>
             </div>
 
-            {/* Placeholder Like/Comments */}
+            {/* Like/Comments */}
             <div className="flex items-center gap-4 text-gray-600 dark:text-gray-300">
-              <p>❤️ 12</p>
-              <p>💬 {filteredComments?.length}</p>
+              <button
+                onClick={handleLike}
+                disabled={!userId}
+                className="flex items-center gap-1 hover:text-red-500 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                ❤️ {totalLike || 0}
+              </button>
+
+              <p>💬 {filteredComments?.length || 0}</p>
             </div>
           </div>
 

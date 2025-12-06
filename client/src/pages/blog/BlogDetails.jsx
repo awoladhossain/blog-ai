@@ -46,7 +46,7 @@ const BlogDetails = () => {
     <div className="pt-20 px-10">
       <Card className="shadow-sm border border-border">
         <CardHeader className="flex flex-row justify-between items-center">
-          <h2 className="text-xl font-semibold">Categories</h2>
+          <h2 className="text-xl font-semibold">Blogs</h2>
           <Button asChild className="bg-primary hover:bg-primary/80">
             <Link to={RouteBlogAdd}>Add Blog</Link>
           </Button>

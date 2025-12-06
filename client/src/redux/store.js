@@ -16,7 +16,7 @@ import themeReducer from "./slices/themeSlice";
 import userReducer from "./slices/userSlices";
 import blogReducer from "./slices/blogSlices";
 import commentReducer from "./slices/commentSlice";
-
+import blogLikeReducer from "./slices/bloglikeSlices";
 
 const persistConfig = {
   key: "auth",
@@ -31,6 +31,7 @@ const themePersistConfig = {
 const persistedAuthReducer = persistReducer(persistConfig, authReducer);
 const persistedThemeReducer = persistReducer(themePersistConfig, themeReducer);
 const persistedUserReducer = persistReducer(persistConfig, userReducer);
+const persistedBlogLikeReducer = persistReducer(persistConfig, blogLikeReducer);
 
 export const store = configureStore({
   reducer: {
@@ -40,6 +41,7 @@ export const store = configureStore({
     category: categoryReducer,
     blog: blogReducer,
     comment: commentReducer,
+    blogLike: persistedBlogLikeReducer,
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware({
