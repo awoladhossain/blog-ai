@@ -23,3 +23,16 @@ export const getAllComments = createAsyncThunk("comment/getAll",async(_, thunkAP
     return thunkAPI.rejectWithValue(error.response?.data?.message);
   }
 })
+
+export const getCommentsByBlogId = createAsyncThunk(
+  "comment/getByBlogId",
+  async ( id , thunkAPI) => {
+    try {
+      const response = await axiosInstance.get(`/comments/${id}`);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response?.data?.message);
+    }
+  }
+);
+

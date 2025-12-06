@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addComment, getAllComments } from "../api/commentAPI";
+import {
+  addComment,
+  getAllComments,
+  getCommentsByBlogId,
+} from "../api/commentAPI";
 const initialState = {
   comments: [],
   loading: false,
@@ -23,17 +27,33 @@ const commentSlice = createSlice({
       .addCase(addComment.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      }).addCase(getAllComments.pending, (state) => {
+      })
+      .addCase(getAllComments.pending, (state) => {
         state.loading = true;
         state.error = null;
-      }).addCase(getAllComments.fulfilled, (state, action) => {
+      })
+      .addCase(getAllComments.fulfilled, (state, action) => {
         state.loading = false;
         state.comments = action.payload.data;
         state.error = null;
-      }).addCase(getAllComments.rejected, (state, action) => {
+      })
+      .addCase(getAllComments.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
+      .addCase(getCommentsByBlogId.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getCommentsByBlogId.fulfilled, (state, action) => {
+        state.loading = false;
+        state.comments = action.payload.data;
+        state.error = null;
+      })
+      .addCase(getCommentsByBlogId.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
 

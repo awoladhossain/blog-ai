@@ -29,6 +29,10 @@ const SingleBlogDetails = () => {
   }, []);
 
   if (loading) return <SpinnerCustom />;
+  // Filter comments by this blog
+  const filteredComments = comments.filter(
+    (c) => c.blogId === blog_params.blog_id
+  );
 
   return (
     <motion.div
@@ -70,7 +74,7 @@ const SingleBlogDetails = () => {
             {/* Placeholder Like/Comments */}
             <div className="flex items-center gap-4 text-gray-600 dark:text-gray-300">
               <p>❤️ 12</p>
-              <p>💬 {comments.length}</p>
+              <p>💬 {filteredComments?.length}</p>
             </div>
           </div>
 
