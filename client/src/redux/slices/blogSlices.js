@@ -3,6 +3,7 @@ import {
   createBlog,
   deleteBlog,
   getAllBlogs,
+  getRelatedBlogs,
   singleBlog,
   updateBlog,
 } from "../api/blogAPI";
@@ -10,6 +11,7 @@ import {
 const initialState = {
   blogs: [],
   singleBlog: null,
+  relatedBlogs: [],
   loading: false,
   error: null,
 };
@@ -91,6 +93,19 @@ const blogSlice = createSlice({
         state.error = null;
       })
       .addCase(updateBlog.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getRelatedBlogs.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getRelatedBlogs.fulfilled, (state, action) => {
+        state.loading = false;
+        state.relatedBlogs = action.payload.data;
+        state.error = null;
+      })
+      .addCase(getRelatedBlogs.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

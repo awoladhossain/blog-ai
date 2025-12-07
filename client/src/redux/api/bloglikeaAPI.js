@@ -14,9 +14,9 @@ export const toggleBlogLike = createAsyncThunk(
       });
 
       // 🔍 DEBUG: Check the full response structure
-      console.log("Toggle Like - Full Response:", res);
-      console.log("Toggle Like - Response Data:", res.data);
-      console.log("Toggle Like - Response Data.data:", res.data?.data);
+      // console.log("Toggle Like - Full Response:", res);
+      // console.log("Toggle Like - Response Data:", res.data);
+      // console.log("Toggle Like - Response Data.data:", res.data?.data);
 
       return res.data;
     } catch (error) {
@@ -37,9 +37,9 @@ export const getBlogLikeCount = createAsyncThunk(
       const res = await axiosInstance.get(`/likes/count/${blogId}`);
 
       // 🔍 DEBUG: Check the full response structure
-      console.log("Get Like Count - Full Response:", res);
-      console.log("Get Like Count - Response Data:", res.data);
-      console.log("Get Like Count - Response Data.data:", res.data?.data);
+      // console.log("Get Like Count - Full Response:", res);
+      // console.log("Get Like Count - Response Data:", res.data);
+      // console.log("Get Like Count - Response Data.data:", res.data?.data);
 
       return res.data;
     } catch (error) {

@@ -54,8 +54,8 @@ const blogLikeSlice = createSlice({
 
         state.totalLike = payload?.totalLike ?? 0;
 
-        console.log("Redux - Get Count Payload:", payload);
-        console.log("Redux - Updated totalLike:", state.totalLike);
+        // console.log("Redux - Get Count Payload:", payload);
+        // console.log("Redux - Updated totalLike:", state.totalLike);
       })
       .addCase(getBlogLikeCount.rejected, (state, action) => {
         state.loading = false;

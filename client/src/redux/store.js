@@ -11,12 +11,12 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import authReducer from "./slices/authSlices";
+import blogLikeReducer from "./slices/bloglikeSlices";
+import blogReducer from "./slices/blogSlices";
 import categoryReducer from "./slices/categorySlice";
+import commentReducer from "./slices/commentSlice";
 import themeReducer from "./slices/themeSlice";
 import userReducer from "./slices/userSlices";
-import blogReducer from "./slices/blogSlices";
-import commentReducer from "./slices/commentSlice";
-import blogLikeReducer from "./slices/bloglikeSlices";
 
 const persistConfig = {
   key: "auth",

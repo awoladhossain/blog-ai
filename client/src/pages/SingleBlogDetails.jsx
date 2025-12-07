@@ -1,7 +1,7 @@
 import Comments from "@/components/Comments";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SpinnerCustom } from "@/components/ui/spinner";
-import { singleBlog } from "@/redux/api/blogAPI";
+import { getRelatedBlogs, singleBlog } from "@/redux/api/blogAPI";
 import { getBlogLikeCount, toggleBlogLike } from "@/redux/api/bloglikeaAPI";
 import { motion } from "framer-motion";
 import { decode } from "html-entities";
@@ -23,13 +23,25 @@ const SingleBlogDetails = () => {
   const { comments } = useSelector((state) => state.comment);
   const { user } = useSelector((state) => state.auth);
   const { totalLike } = useSelector((state) => state.blogLike);
+  const { category } = useSelector((state) => state.category);
+  console.log(category)
 
   const userId = user?._id;
-
+  // console.log(blog_params)
+  // console.log("category name:", blog_params.category);
+  const filteredCategoryName = category.filter(
+    (c) => c.slug === blog_params.category
+  );
+  console.log(filteredCategoryName[0]?._id);
+  const categoryId = filteredCategoryName[0]?._id;
   useEffect(() => {
     dispatch(singleBlog(blog_params.blog_id));
     dispatch(getBlogLikeCount(blog_params.blog_id));
-  }, [dispatch, blog_params.blog_id]);
+    // Only fetch related blogs if categoryId exists
+    if (categoryId) {
+      dispatch(getRelatedBlogs(categoryId));
+    }
+  }, [dispatch, blog_params.blog_id, categoryId]);
 
   if (loading) return <SpinnerCustom />;
 
@@ -50,7 +62,8 @@ const SingleBlogDetails = () => {
         blogId: blog_params.blog_id,
         userId,
       })
-    ).unwrap()
+    )
+      .unwrap()
       .then((res) => toast.success(res.message || "Like toggled successfully"))
       .catch((err) => toast.error(err || "Like failed"));
   };
@@ -145,23 +158,7 @@ const SingleBlogDetails = () => {
           className="border rounded-xl shadow-md md:w-[30%] w-full p-5 bg-white dark:bg-neutral-900 h-fit"
         >
           <h2 className="text-xl font-bold mb-4">Related Blogs</h2>
-
-          <div className="space-y-5">
-            {[1, 2, 3].map((i) => (
-              <motion.div
-                key={i}
-                whileHover={{ scale: 1.03 }}
-                className="p-4 border rounded-lg shadow-sm hover:shadow-md bg-gray-50 dark:bg-neutral-800 cursor-pointer"
-              >
-                <p className="font-semibold text-gray-900 dark:text-gray-200">
-                  Related Blog {i}
-                </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Short preview text here...
-                </p>
-              </motion.div>
-            ))}
-          </div>
+          {/* <RelatedBlog category={blog?.category} blogId={blog?._id} /> */}
         </motion.div>
       </div>
     </motion.div>
