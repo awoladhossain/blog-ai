@@ -55,9 +55,9 @@ export const getCommentsByBlogId = catchAsync(async (req, res, next) => {
     .populate("author", "fullname avatar role")
     .sort({ createdAt: -1 });
 
-  if (comments.length === 0) {
-    return next(new AppError("No comments found", StatusCodes.NOT_FOUND));
-  }
+  // if (comments.length === 0) {
+  //   return next(new AppError("No comments found", StatusCodes.NOT_FOUND));
+  // }
   return successResponse(
     res,
     StatusCodes.OK,

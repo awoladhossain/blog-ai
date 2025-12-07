@@ -4,6 +4,7 @@ import {
   deleteBlog,
   editBlog,
   getBlogById,
+  getRelatedBlogs,
   showAllBlogs,
 } from "../controllers/blog.controller.js";
 import { upload } from "../middlewares/upload.middleware.js";
@@ -15,5 +16,6 @@ route.get("/", showAllBlogs);
 route.get("/:id", getBlogById);
 route.put("/blog-edit/:id", upload.single("avatar"), editBlog);
 route.delete("/:id", deleteBlog);
+route.get("/getRelated/:id", getRelatedBlogs);
 
 export default route;

@@ -1,11 +1,11 @@
 import { encode } from "html-entities";
+import { StatusCodes } from "http-status-codes";
 import streamifier from "streamifier";
 import cloudinary from "../config/cloudinary.js";
 import Blog from "../models/blog.model.js";
 import AppError from "../utils/AppError.js";
 import { catchAsync } from "../utils/catchAsync.js";
 import { successResponse } from "../utils/response.js";
-import { StatusCodes } from "http-status-codes";
 
 export const addBlog = catchAsync(async (req, res, next) => {
   const data = JSON.parse(req.body.data || "{}");
@@ -51,7 +51,12 @@ export const showAllBlogs = catchAsync(async (req, res, next) => {
     .sort({ createdAt: -1 })
     .lean()
     .exec();
-  return successResponse(res, StatusCodes.OK, "Blogs found successfully", blogs);
+  return successResponse(
+    res,
+    StatusCodes.OK,
+    "Blogs found successfully",
+    blogs
+  );
 });
 
 export const getBlogById = catchAsync(async (req, res, next) => {
@@ -65,7 +70,7 @@ export const getBlogById = catchAsync(async (req, res, next) => {
     return next(new AppError("Blog not found", StatusCodes.NOT_FOUND));
   }
   return successResponse(res, StatusCodes.OK, "Blog found successfully", blog);
-})
+});
 
 export const editBlog = catchAsync(async (req, res, next) => {
   const id = req.params.id;
@@ -156,4 +161,16 @@ export const deleteBlog = catchAsync(async (req, res, next) => {
   );
 });
 
-
+export const getRelatedBlogs = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+  const blogs = await Blog.find({ category: id }).lean().exec();
+  if (blogs.length === 0) {
+    return next(new AppError("No related blog found", StatusCodes.NOT_FOUND));
+  }
+  return successResponse(
+    res,
+    StatusCodes.OK,
+    "Blogs found successfully",
+    blogs
+  );
+});
