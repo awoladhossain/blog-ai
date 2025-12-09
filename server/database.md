@@ -27,7 +27,6 @@ ACID is the set of properties that guarantee reliable processing of database tra
 - Durability ("It Stays Saved") – Once a transaction is committed, the changes are permanent—even if the system crashes.
   Example: After transferring money, the new balances remain stored safely in the database
 
-``
 -- Start the transaction
 BEGIN TRANSACTION;
 
@@ -41,12 +40,9 @@ UPDATE Accounts
 SET balance = balance + 100
 WHERE account_id = 'B';
 
--- If everything is successful, commit the changes
+-- Commit or rollback
 COMMIT;
-
--- If something goes wrong, undo all changes
 ROLLBACK;
-``
 
 - Atomicity: Both updates (deduct from A, add to B) must succeed together. If one fails, ROLLBACK ensures neither change is saved.
 
@@ -73,5 +69,3 @@ Normalization in SQL is the process of organizing tables to reduce redundancy an
 - Normalization = breaking large, messy tables into smaller, logical ones.
 - Goal: avoid duplicate data, prevent anomalies (update, insert, delete problems), and ensure consistency.
 - Common forms: 1NF → 2NF → 3NF → BCNF (Boyce-Codd Normal Form).
-
-
