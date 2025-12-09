@@ -27,6 +27,7 @@ ACID is the set of properties that guarantee reliable processing of database tra
 - Durability ("It Stays Saved") – Once a transaction is committed, the changes are permanent—even if the system crashes.
   Example: After transferring money, the new balances remain stored safely in the database
 
+``
 -- Start the transaction
 BEGIN TRANSACTION;
 
@@ -43,6 +44,7 @@ WHERE account_id = 'B';
 -- Commit or rollback
 COMMIT;
 ROLLBACK;
+``
 
 - Atomicity: Both updates (deduct from A, add to B) must succeed together. If one fails, ROLLBACK ensures neither change is saved.
 
@@ -69,3 +71,22 @@ Normalization in SQL is the process of organizing tables to reduce redundancy an
 - Normalization = breaking large, messy tables into smaller, logical ones.
 - Goal: avoid duplicate data, prevent anomalies (update, insert, delete problems), and ensure consistency.
 - Common forms: 1NF → 2NF → 3NF → BCNF (Boyce-Codd Normal Form).
+
+## 1️⃣ First Normal Form (1NF) – No Repeating Groups
+
+- Rule: Each column must hold atomic (indivisible) values.
+
+## ❌ What NOT to Do in 1NF
+
+- Don’t store multiple values in one column. Example: putting several phone numbers in a single field separated by commas.
+  -Don’t use repeating groups of columns. Example: phone1, phone2, phone3 columns in the same table.
+  -Don’t keep non-atomic (non-divisible) data. Example: storing full address in one column like "House 12, Road 5, Dhaka" instead of splitting into street, city, etc.
+
+```
+-- Bad design: multiple values in one column
+CREATE TABLE Customers (
+    customer_id INT PRIMARY KEY,
+    name VARCHAR(50),
+    phone_numbers VARCHAR(100) -- "12345, 67890"
+);
+```
