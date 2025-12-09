@@ -74,7 +74,7 @@ Normalization in SQL is the process of organizing tables to reduce redundancy an
 
 ## 1️⃣ First Normal Form (1NF) – No Repeating Groups
 
-- Rule: Each column must hold atomic (indivisible) values.
+**_Rule: Each column must hold atomic (indivisible) values._**
 
 ## ❌ What NOT to Do in 1NF
 
@@ -228,3 +228,110 @@ CREATE TABLE Students (
 - city depends only on zip_code in the ZipCodes table.
 - Students table has no transitive dependency — every column depends directly on student_id.
 - ✅ This is proper 3NF.
+
+## 1️⃣ One-to-One (1:1)
+
+**Definition: Each record in Table A relates to exactly one record in Table B.**
+
+**Example:**
+
+- Table Students: student_id, name
+- Table StudentPassports: passport_id, student_id
+- Each student has one passport, and each passport belongs to one student.
+
+```
+CREATE TABLE Students (
+    student_id INT PRIMARY KEY,
+    name VARCHAR(50)
+);
+
+CREATE TABLE StudentPassports (
+    passport_id INT PRIMARY KEY,
+    student_id INT UNIQUE,
+    FOREIGN KEY (student_id) REFERENCES Students(student_id)
+);
+```
+
+## 2️⃣ One-to-Many (1:N)
+
+**_Definition: One record in Table A can relate to many records in Table B._**
+
+**Example:**
+
+- Table Teachers: teacher_id, name
+- Table Courses: course_id, teacher_id
+- One teacher can teach many courses, but each course has one teacher.
+
+```
+CREATE TABLE Teachers (
+    teacher_id INT PRIMARY KEY,
+    name VARCHAR(50)
+);
+
+CREATE TABLE Courses (
+    course_id INT PRIMARY KEY,
+    course_name VARCHAR(50),
+    teacher_id INT,
+    FOREIGN KEY (teacher_id) REFERENCES Teachers(teacher_id)
+);
+```
+
+## 3️⃣ Many-to-Many (M:N)
+
+- In a many-to-many (M:N) relationship, you must use an intermediate (junction) table to connect the two entities. This is because relational databases don’t allow direct many-to-many links between two tables.
+
+**Why Intermediate Table is Needed**
+
+- A student can enroll in many courses.
+- A course can have many students.
+- If you try to store this directly, you’ll end up with duplicate or messy data.
+- The junction table solves this by holding pairs of IDs.
+
+```
+-- Students table
+CREATE TABLE Students (
+    student_id INT PRIMARY KEY,
+    student_name VARCHAR(50)
+);
+
+-- Courses table
+CREATE TABLE Courses (
+    course_id INT PRIMARY KEY,
+    course_name VARCHAR(50)
+);
+
+-- Junction table (StudentCourses)
+CREATE TABLE StudentCourses (
+    student_id INT,
+    course_id INT,
+    PRIMARY KEY (student_id, course_id),
+    FOREIGN KEY (student_id) REFERENCES Students(student_id),
+    FOREIGN KEY (course_id) REFERENCES Courses(course_id)
+);
+```
+
+**🔎 How It Works**
+
+- Students holds student info.
+- Courses holds course info.
+- StudentCourses links them together:
+  > Each row = one student enrolled in one course.
+  > Composite key (student_id, course_id) ensures no duplicates.
+
+## 4️⃣ Self-Referencing (Recursive Relationship)
+
+**Definition: A table relates to itself.**
+
+- Example:
+  > Table Employees: employee_id, name, manager_id
+- An employee can be managed by another employee in the same table.
+
+```
+CREATE TABLE Employees (
+    employee_id INT PRIMARY KEY,
+    name VARCHAR(50),
+    manager_id INT,
+    FOREIGN KEY (manager_id) REFERENCES Employees(employee_id)
+);
+```
+
