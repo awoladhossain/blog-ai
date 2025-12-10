@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import streamifier from "streamifier";
 import cloudinary from "../config/cloudinary.js";
 import Blog from "../models/blog.model.js";
+import Category from "../models/category.model.js";
 import AppError from "../utils/AppError.js";
 import { catchAsync } from "../utils/catchAsync.js";
 import { successResponse } from "../utils/response.js";
@@ -173,4 +174,15 @@ export const getRelatedBlogs = catchAsync(async (req, res, next) => {
     "Blogs found successfully",
     blogs
   );
+});
+
+export const getBlogByCategory = catchAsync(async (req, res, next) => {
+  const { category } = req.params;
+  const categoryData = await Category.findOne({ slug: category });
+  if (!categoryData) {
+    return next(new AppError("Category not found", StatusCodes.NOT_FOUND));
+  }
+  const categoryId = categoryData._id;
+  const blog = await Blog.find({ category: categoryId }).lean().exec();
+  return successResponse(res, StatusCodes.OK, "Blogs found successfully", blog);
 });
