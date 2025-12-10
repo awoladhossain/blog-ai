@@ -78,14 +78,25 @@ export const updateBlog = createAsyncThunk(
 export const getRelatedBlogs = createAsyncThunk(
   "blog/related",
   async (id, thunkAPI) => {
-    // Just accept the string directly
-    console.log(id);
     try {
       const response = await axiosInstance.get(`/blogs/getRelated/${id}`);
-      console.log(response);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data?.message);
+    }
+  }
+);
+
+export const getBlogByCategory = createAsyncThunk(
+  "blog/byCategory",
+  async (category, thunkAPI) => {
+    try {
+      const res = await axiosInstance.get(`/blogs/get-blog/${category}`);
+      return res.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Failed to load blogs"
+      );
     }
   }
 );

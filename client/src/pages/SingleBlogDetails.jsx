@@ -1,4 +1,5 @@
 import Comments from "@/components/Comments";
+import RelatedBlog from "@/components/RelatedBlog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SpinnerCustom } from "@/components/ui/spinner";
 import { getRelatedBlogs, singleBlog } from "@/redux/api/blogAPI";
@@ -19,20 +20,21 @@ const fadeIn = {
 const SingleBlogDetails = () => {
   const blog_params = useParams();
   const dispatch = useDispatch();
-  const { singleBlog: blog, loading } = useSelector((state) => state.blog);
+  const {
+    singleBlog: blog,
+    loading,
+    relatedBlogs,
+  } = useSelector((state) => state.blog);
   const { comments } = useSelector((state) => state.comment);
   const { user } = useSelector((state) => state.auth);
   const { totalLike } = useSelector((state) => state.blogLike);
   const { category } = useSelector((state) => state.category);
-  console.log(category)
-
   const userId = user?._id;
-  // console.log(blog_params)
-  // console.log("category name:", blog_params.category);
+
   const filteredCategoryName = category.filter(
     (c) => c.slug === blog_params.category
   );
-  console.log(filteredCategoryName[0]?._id);
+
   const categoryId = filteredCategoryName[0]?._id;
   useEffect(() => {
     dispatch(singleBlog(blog_params.blog_id));
@@ -67,6 +69,10 @@ const SingleBlogDetails = () => {
       .then((res) => toast.success(res.message || "Like toggled successfully"))
       .catch((err) => toast.error(err || "Like failed"));
   };
+
+  const filteredRelatedBlogs = relatedBlogs.filter(
+    (b) => b._id !== blog_params.blog_id
+  );
 
   return (
     <motion.div
@@ -158,7 +164,16 @@ const SingleBlogDetails = () => {
           className="border rounded-xl shadow-md md:w-[30%] w-full p-5 bg-white dark:bg-neutral-900 h-fit"
         >
           <h2 className="text-xl font-bold mb-4">Related Blogs</h2>
-          {/* <RelatedBlog category={blog?.category} blogId={blog?._id} /> */}
+          {filteredRelatedBlogs.map((blog) => (
+            <RelatedBlog
+              key={blog._id}
+              blogId={blog._id}
+              featuredImage={blog.featuredImage}
+              title={blog.title}
+              description={blog.description}
+              slug={blog.slug}
+            />
+          ))}
         </motion.div>
       </div>
     </motion.div>

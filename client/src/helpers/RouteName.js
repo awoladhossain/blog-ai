@@ -29,7 +29,19 @@ export const RouteBlogEdit = (blog_id) => {
 export const RouteBlogDetails = (category, blog, blog_id) => {
   if (!category && !blog) {
     return `/app/blog/:category/:blog/:blog_id`;
-  }else{
+  } else {
     return `/app/blog/${category}/${blog}/${blog_id}`;
   }
+};
+
+export const RouteBlogByCategory = (category) => {
+  if (!category) {
+    return `/app/blog/:category`;
+  } else {
+    return `/app/blog/${category}`;
+  }
+};
+
+export const RouteSearch = (q) => {
+  return `/app/blog/search=${q}`;
 };

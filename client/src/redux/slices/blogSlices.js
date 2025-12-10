@@ -3,6 +3,7 @@ import {
   createBlog,
   deleteBlog,
   getAllBlogs,
+  getBlogByCategory,
   getRelatedBlogs,
   singleBlog,
   updateBlog,
@@ -10,6 +11,7 @@ import {
 
 const initialState = {
   blogs: [],
+  categoryBlogs: [],
   singleBlog: null,
   relatedBlogs: [],
   loading: false,
@@ -106,6 +108,19 @@ const blogSlice = createSlice({
         state.error = null;
       })
       .addCase(getRelatedBlogs.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getBlogByCategory.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getBlogByCategory.fulfilled, (state, action) => {
+        state.loading = false;
+        state.categoryBlogs = action.payload.data;
+        state.error = null;
+      })
+      .addCase(getBlogByCategory.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

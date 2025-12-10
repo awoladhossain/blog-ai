@@ -1,5 +1,6 @@
 import {
   RouteBlog,
+  RouteBlogByCategory,
   RouteCategoryDetails,
   RouteIndex,
 } from "@/helpers/RouteName";
@@ -33,7 +34,6 @@ const AppSidebar = () => {
   useEffect(() => {
     dispatch(getAllCategories());
   }, [dispatch]);
-  // console.log(categories);
 
   return (
     <Sidebar>
@@ -70,7 +70,7 @@ const AppSidebar = () => {
           </SidebarMenu>
         </SidebarGroup>
         {/* anothes group */}
-        <SidebarGroup>
+        {/* <SidebarGroup>
           <SidebarGroupLabel>Categories</SidebarGroupLabel>
           <SidebarMenu>
             {categories &&
@@ -80,11 +80,27 @@ const AppSidebar = () => {
                   <SidebarMenuItem key={category._id}>
                     <SidebarMenuButton>
                       <BookmarkPlus />
-                      <Link to={RouteIndex}>{category.name}</Link>
+                      <Link to={RouteBlogByCategory(category.slug)}>{category.name}</Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 );
               })}
+          </SidebarMenu>
+        </SidebarGroup> */}
+        <SidebarGroup>
+          <SidebarGroupLabel>Categories</SidebarGroupLabel>
+
+          <SidebarMenu>
+            {categories?.map((category) => (
+              <SidebarMenuItem key={category._id}>
+                <Link to={RouteBlogByCategory(category.slug)}>
+                  <SidebarMenuButton>
+                    <BookmarkPlus />
+                    <span>{category.name}</span>
+                  </SidebarMenuButton>
+                </Link>
+              </SidebarMenuItem>
+            ))}
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
