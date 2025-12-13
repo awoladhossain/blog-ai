@@ -35,7 +35,9 @@ export const addComment = catchAsync(async (req, res, next) => {
 });
 
 export const getAllComments = catchAsync(async (req, res, next) => {
-  const comments = await Comment.find().sort({ createdAt: -1 });
+  const comments = await Comment.find()
+    .populate("blogId author")
+    .sort({ createdAt: -1 });
 
   if (comments.length === 0) {
     return next(new AppError("No comments found", StatusCodes.NOT_FOUND));
@@ -55,13 +57,24 @@ export const getCommentsByBlogId = catchAsync(async (req, res, next) => {
     .populate("author", "fullname avatar role")
     .sort({ createdAt: -1 });
 
-  // if (comments.length === 0) {
-  //   return next(new AppError("No comments found", StatusCodes.NOT_FOUND));
-  // }
   return successResponse(
     res,
     StatusCodes.OK,
     "Comments found successfully",
     comments
+  );
+});
+
+export const deleteComment = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+  const comment = await Comment.findByIdAndDelete(id);
+  if (!comment) {
+    return next(new AppError("Comment not found", StatusCodes.NOT_FOUND));
+  }
+  return successResponse(
+    res,
+    StatusCodes.OK,
+    "Comment deleted successfully",
+    comment
   );
 });

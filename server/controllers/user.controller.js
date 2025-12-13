@@ -19,7 +19,7 @@ export const getUserByID = catchAsync(async (req, res, next) => {
 export const updateUserProfile = catchAsync(async (req, res, next) => {
   const { userId } = req.params;
   const user = await User.findById(userId);
-  
+
   if (!user) {
     return next(new AppError("User not found", StatusCodes.NOT_FOUND));
   }
@@ -63,6 +63,25 @@ export const updateUserProfile = catchAsync(async (req, res, next) => {
     res,
     StatusCodes.OK,
     "User updated successfully",
+    user
+  );
+});
+
+export const getAllUsers = catchAsync(async (req, res, next) => {
+  const users = await User.find().lean().exec();
+  return successResponse(res, StatusCodes.OK, "Users found successfully", users);
+})
+
+export const deleteUser = catchAsync(async (req, res, next) => {
+  const { userId } = req.params;
+  const user = await User.findByIdAndDelete(userId);
+  if (!user) {
+    return next(new AppError("User not found", StatusCodes.NOT_FOUND));
+  }
+  return successResponse(
+    res,
+    StatusCodes.OK,
+    "User deleted successfully",
     user
   );
 });
