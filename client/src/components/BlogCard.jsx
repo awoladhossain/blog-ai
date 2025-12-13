@@ -35,7 +35,7 @@ const BlogCard = ({ props }) => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Avatar>
-                <AvatarImage src={props.author?.avatar} />
+                <AvatarImage src={props?.author?.avatar} />
                 <AvatarFallback>U</AvatarFallback>
               </Avatar>
               <span className="font-medium text-sm">

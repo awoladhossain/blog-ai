@@ -87,7 +87,6 @@ const AddBlog = () => {
 
   const handleChangeData = (event, editor) => {
     const data = editor.getData();
-    // console.log(data);
     form.setValue("description", data);
   };
   const onSubmit = (values) => {

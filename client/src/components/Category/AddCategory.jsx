@@ -51,7 +51,7 @@ const AddCategory = () => {
   });
   // define a submit handler
   function onSubmit(values) {
-    console.log(values);
+
     dispatch(createCategory(values))
       .unwrap()
       .then((res) => {

@@ -14,19 +14,18 @@ const GoogleLogin = () => {
   const navigate = useNavigate();
   const handleLogin = async () => {
     const googleResponse = await signInWithPopup(auth, provider);
-    console.log(googleResponse);
+
     const user = googleResponse.user;
     const bodyData = {
       fullname: user.displayName,
       email: user.email,
       avatar: user.photoURL,
     };
-    console.log(bodyData)
+ 
     dispatch(googleLogin(bodyData))
       .unwrap()
       .then((res) => {
         toast.success(res.message || "User Login Successfull with Google");
-        // console.log(res.message)
         navigate(RouteIndex);
       })
       .catch((err) => {

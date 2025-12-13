@@ -51,7 +51,7 @@ export const googleLogin = createAsyncThunk(
         bodyData,
         { withCredentials: true }
       );
-      console.log(response);
+ 
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(

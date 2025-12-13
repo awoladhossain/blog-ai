@@ -9,6 +9,7 @@ const BlogByCategory = () => {
   const dispatch = useDispatch();
   const { categoryBlogs, loading, error } = useSelector((state) => state.blog);
 
+
   useEffect(() => {
     if (category) {
       dispatch(getBlogByCategory(category));

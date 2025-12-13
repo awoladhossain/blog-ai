@@ -26,10 +26,10 @@ import EditBlog from "./pages/blog/EditBlog";
 import BlogByCategory from "./pages/BlogByCategory";
 import Index from "./pages/Index";
 import Profile from "./pages/Profile";
+import SearchResult from "./pages/SearchResult";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import SingleBlogDetails from "./pages/SingleBlogDetails";
-import SearchResult from "./pages/SearchResult";
 
 const App = () => {
   return (
@@ -56,7 +56,7 @@ const App = () => {
           <Route path={RouteBlogEdit()} element={<EditBlog />} />
           <Route path={RouteBlogDetails()} element={<SingleBlogDetails />} />
           <Route path={RouteBlogByCategory()} element={<BlogByCategory />} />
-          <Route path={RouteSearch()} element={<SearchResult />} />
+          <Route path="/app/blog/search" element={<SearchResult />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -30,7 +30,7 @@ const BlogDetails = () => {
   }
 
   const handleDeleteBlog = (id) => {
-    console.log(id);
+
     dispatch(deleteBlog(id))
       .unwrap()
       .then((res) => {

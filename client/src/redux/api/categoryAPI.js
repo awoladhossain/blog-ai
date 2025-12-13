@@ -4,7 +4,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 export const createCategory = createAsyncThunk(
   "category/create",
   async (data, thunkAPI) => {
-    console.log(data);
+   
     try {
       const response = await axiosInstance.post("/categories/add", data);
       return response.data;

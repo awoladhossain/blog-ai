@@ -10,6 +10,7 @@ import {
   BookOpenText,
   ChartColumnStacked,
   HousePlus,
+  MessageCircle,
   Rss,
 } from "lucide-react";
 import { useEffect } from "react";
@@ -67,29 +68,19 @@ const AppSidebar = () => {
                 </SidebarMenuButton>
               </Link>
             </SidebarMenuItem>
+            <SidebarMenuItem>
+              <Link to={RouteBlog}>
+                <SidebarMenuButton>
+                  <MessageCircle />
+                  <span>Comments</span>
+                </SidebarMenuButton>
+              </Link>
+            </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>
         {/* anothes group */}
-        {/* <SidebarGroup>
-          <SidebarGroupLabel>Categories</SidebarGroupLabel>
-          <SidebarMenu>
-            {categories &&
-              categories.length > 0 &&
-              categories.map((category) => {
-                return (
-                  <SidebarMenuItem key={category._id}>
-                    <SidebarMenuButton>
-                      <BookmarkPlus />
-                      <Link to={RouteBlogByCategory(category.slug)}>{category.name}</Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
-          </SidebarMenu>
-        </SidebarGroup> */}
         <SidebarGroup>
           <SidebarGroupLabel>Categories</SidebarGroupLabel>
-
           <SidebarMenu>
             {categories?.map((category) => (
               <SidebarMenuItem key={category._id}>

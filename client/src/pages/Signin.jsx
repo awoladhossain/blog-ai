@@ -54,7 +54,6 @@ const Signin = () => {
       .catch((err) => {
         toast.error(err || "Login failed");
       });
-    console.log(values);
   }
   return (
     <div className="flex justify-center items-center h-screen w-screen bg-background">

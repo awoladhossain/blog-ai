@@ -13,10 +13,7 @@ export const toggleBlogLike = createAsyncThunk(
         userId,
       });
 
-      // 🔍 DEBUG: Check the full response structure
-      // console.log("Toggle Like - Full Response:", res);
-      // console.log("Toggle Like - Response Data:", res.data);
-      // console.log("Toggle Like - Response Data.data:", res.data?.data);
+
 
       return res.data;
     } catch (error) {
@@ -35,12 +32,6 @@ export const getBlogLikeCount = createAsyncThunk(
   async (blogId, thunkAPI) => {
     try {
       const res = await axiosInstance.get(`/likes/count/${blogId}`);
-
-      // 🔍 DEBUG: Check the full response structure
-      // console.log("Get Like Count - Full Response:", res);
-      // console.log("Get Like Count - Response Data:", res.data);
-      // console.log("Get Like Count - Response Data.data:", res.data?.data);
-
       return res.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(

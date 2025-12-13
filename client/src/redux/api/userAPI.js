@@ -18,13 +18,13 @@ export const updateUserProfile = createAsyncThunk(
   "users/updateUserProfile",
   async ({ id, formData }, thunkAPI) => {
     try {
-      console.log({id,formData})
+
       const response = await axiosInstance.put(`/users/${id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(response.data);
+  
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data?.message);

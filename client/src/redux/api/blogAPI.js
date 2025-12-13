@@ -4,7 +4,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 export const createBlog = createAsyncThunk(
   "blog/create",
   async (data, thunkAPI) => {
-    // console.log(data);
+
     try {
       const response = await axiosInstance.post("/blogs/add", data, {
         headers: {
@@ -33,7 +33,6 @@ export const getAllBlogs = createAsyncThunk(
 export const deleteBlog = createAsyncThunk(
   "blog/delete",
   async (id, thunkAPI) => {
-    console.log(id);
     try {
       const response = await axiosInstance.delete(`/blogs/${id}`);
       return response.data;
@@ -100,3 +99,20 @@ export const getBlogByCategory = createAsyncThunk(
     }
   }
 );
+
+export const getBlogBySearch = createAsyncThunk(
+  "blog/bySearch",
+  async (query, thunkAPI) => {
+    try {
+      const res = await axiosInstance.get(`/blogs/search?q=${query}`);
+
+      return res.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Failed to load blogs"
+      );
+    }
+  }
+);
+
+

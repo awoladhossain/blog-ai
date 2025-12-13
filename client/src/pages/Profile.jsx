@@ -28,7 +28,7 @@ const Profile = () => {
 
   // Fetched full profile (from userSlice)
   const { user: profileUser, loading } = useSelector((state) => state.user);
-  // console.log(profileUser?.avatar);
+
   // Fetch full user profile
   useEffect(() => {
     if (authUser?._id) {
@@ -76,7 +76,7 @@ const Profile = () => {
     );
   }
   const handleFileUpload = (files) => {
-    console.log(files[0]);
+
     const file = files[0];
     const preview = URL.createObjectURL(file);
     setAvatarFile(file);
@@ -91,12 +91,9 @@ const Profile = () => {
     formData.append("fullname", values.fullname);
     formData.append("bio", values.bio);
     formData.append("password", values.password);
-    console.log(profileUser._id);
+
 
     // debugging
-    for (let pair of formData.entries()) {
-      console.log(pair[0], pair[1]);
-    }
     dispatch(updateUserProfile({ id: profileUser._id, formData }))
       .unwrap()
       .then((res) => {

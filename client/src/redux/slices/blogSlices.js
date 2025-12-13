@@ -4,6 +4,7 @@ import {
   deleteBlog,
   getAllBlogs,
   getBlogByCategory,
+  getBlogBySearch,
   getRelatedBlogs,
   singleBlog,
   updateBlog,
@@ -121,6 +122,20 @@ const blogSlice = createSlice({
         state.error = null;
       })
       .addCase(getBlogByCategory.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getBlogBySearch.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.blogs = [];
+      })
+      .addCase(getBlogBySearch.fulfilled, (state, action) => {
+        state.loading = false;
+        state.blogs = action.payload.data;
+        state.error = null;
+      })
+      .addCase(getBlogBySearch.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

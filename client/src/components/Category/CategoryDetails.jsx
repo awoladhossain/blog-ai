@@ -30,7 +30,6 @@ const CategoryDetails = () => {
     return <SpinnerCustom />;
   }
   const deleteCategoryFromDB = (id) => {
-    console.log("deleted this: ", id);
     dispatch(deleteCategory(id))
       .unwrap()
       .then((res) => {

@@ -33,8 +33,7 @@ const blogLikeSlice = createSlice({
         state.totalLike = payload?.totalLike ?? state.totalLike;
         state.action = payload?.action ?? null;
 
-        console.log("Redux - Toggle Like Payload:", payload);
-        console.log("Redux - Updated totalLike:", state.totalLike);
+
       })
       .addCase(toggleBlogLike.rejected, (state, action) => {
         state.loading = false;
@@ -51,11 +50,7 @@ const blogLikeSlice = createSlice({
 
         // ✅ Handle response: check if data is nested
         const payload = action.payload?.data || action.payload;
-
         state.totalLike = payload?.totalLike ?? 0;
-
-        // console.log("Redux - Get Count Payload:", payload);
-        // console.log("Redux - Updated totalLike:", state.totalLike);
       })
       .addCase(getBlogLikeCount.rejected, (state, action) => {
         state.loading = false;

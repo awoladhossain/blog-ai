@@ -67,7 +67,7 @@ const Signup = () => {
       .catch((err) => {
         toast.error(err || "Registration failed");
       });
-    console.log(values);
+
   }
   return (
     <div className="flex justify-center items-center h-screen w-screen bg-background">
