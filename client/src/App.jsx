@@ -5,7 +5,9 @@ import EditCategory from "./components/Category/EditCategory";
 import Layout from "./components/Layout/Layout";
 import PublicLayout from "./components/Layout/PublicLayout";
 import {
+  RouteAdComments,
   RouteAddCategory,
+  RouteAllUser,
   RouteBlog,
   RouteBlogAdd,
   RouteBlogByCategory,
@@ -15,11 +17,11 @@ import {
   RouteEditCategory,
   RouteIndex,
   RouteProfile,
-  RouteSearch,
   RouteSignin,
   RouteSignup,
   RouteWelcome,
 } from "./helpers/RouteName";
+import AdComments from "./pages/AdComments";
 import AddBlog from "./pages/blog/AddBlog";
 import BlogDetails from "./pages/blog/BlogDetails";
 import EditBlog from "./pages/blog/EditBlog";
@@ -30,6 +32,7 @@ import SearchResult from "./pages/SearchResult";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import SingleBlogDetails from "./pages/SingleBlogDetails";
+import AdUsers from "./pages/AdUsers";
 
 const App = () => {
   return (
@@ -49,6 +52,8 @@ const App = () => {
           <Route path={RouteAddCategory} element={<AddCategory />} />
           <Route path={RouteCategoryDetails} element={<CategoryDetails />} />
           <Route path={RouteEditCategory()} element={<EditCategory />} />
+          <Route path={RouteAdComments} element={<AdComments />} />
+          <Route path={RouteAllUser} element={<AdUsers />} />
 
           {/* Blog routes */}
           <Route path={RouteBlog} element={<BlogDetails />} />

@@ -1,4 +1,6 @@
 import {
+  RouteAdComments,
+  RouteAllUser,
   RouteBlog,
   RouteBlogByCategory,
   RouteCategoryDetails,
@@ -12,6 +14,7 @@ import {
   HousePlus,
   MessageCircle,
   Rss,
+  Users,
 } from "lucide-react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -69,10 +72,18 @@ const AppSidebar = () => {
               </Link>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <Link to={RouteBlog}>
+              <Link to={RouteAdComments}>
                 <SidebarMenuButton>
                   <MessageCircle />
                   <span>Comments</span>
+                </SidebarMenuButton>
+              </Link>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <Link to={RouteAllUser}>
+                <SidebarMenuButton>
+                  <Users />
+                  <span>Users</span>
                 </SidebarMenuButton>
               </Link>
             </SidebarMenuItem>

@@ -1,5 +1,11 @@
-import { RouteIndex, RouteProfile, RouteSignin } from "@/helpers/RouteName";
+import {
+  RouteBlogAdd,
+  RouteIndex,
+  RouteProfile,
+  RouteSignin,
+} from "@/helpers/RouteName";
 import { logoutUser } from "@/redux/api/authAPI";
+import { motion } from "framer-motion";
 import {
   BookOpenText,
   LogIn,
@@ -14,7 +20,6 @@ import SearchBox from "./SearchBox";
 import Theme from "./Theme/Theme";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
-import { motion } from "framer-motion";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -73,7 +78,7 @@ const TopBar = ({ profileUser }) => {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/">
+                <Link to={RouteBlogAdd}>
                   <MessageSquarePlus className="w-5 h-5" />
                   Create Blog
                 </Link>

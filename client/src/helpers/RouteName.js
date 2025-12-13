@@ -49,3 +49,8 @@ export const RouteSearch = (q) => {
     return `/app/blog/search?q=:q`;
   }
 };
+
+export const RouteAdComments = "/app/adcomments";
+
+export const RouteAllUser="/app/users";
+

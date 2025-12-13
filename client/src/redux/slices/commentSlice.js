@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   addComment,
+  deleteComment,
   getAllComments,
   getCommentsByBlogId,
 } from "../api/commentAPI";
@@ -53,9 +54,23 @@ const commentSlice = createSlice({
       .addCase(getCommentsByBlogId.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(deleteComment.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteComment.fulfilled, (state, action) => {
+        state.loading = false;
+        state.comments = state.comments.filter(
+          (comment) => comment._id !== action.payload.data._id
+        );
+        state.error = null;
+      })
+      .addCase(deleteComment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
 export default commentSlice.reducer;
-
