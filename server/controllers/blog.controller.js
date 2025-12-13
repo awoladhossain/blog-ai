@@ -146,7 +146,6 @@ export const editBlog = catchAsync(async (req, res, next) => {
 
 export const deleteBlog = catchAsync(async (req, res, next) => {
   const id = req.params.id;
-  console.log("the error: ", id);
   const blog = await Blog.findByIdAndDelete(id);
 
   if (!blog) {
@@ -183,6 +182,36 @@ export const getBlogByCategory = catchAsync(async (req, res, next) => {
     return next(new AppError("Category not found", StatusCodes.NOT_FOUND));
   }
   const categoryId = categoryData._id;
-  const blog = await Blog.find({ category: categoryId }).lean().exec();
+  const blog = await Blog.find({ category: categoryId })
+    .populate("author", "fullname avatar")
+    .lean()
+    .exec();
   return successResponse(res, StatusCodes.OK, "Blogs found successfully", blog);
+});
+
+export const searchBlogs = catchAsync(async (req, res, next) => {
+  const { q } = req.query;
+
+  if (!q) {
+    return next(
+      new AppError("Please provide a search query", StatusCodes.BAD_REQUEST)
+    );
+  }
+
+  const blogs = await Blog.find({
+    $or: [
+      { title: { $regex: q, $options: "i" } },
+      { description: { $regex: q, $options: "i" } },
+      { slug: { $regex: q, $options: "i" } },
+    ],
+  })
+    .populate("category", "name slug")
+    .populate("author", "fullname avatar");
+
+  return successResponse(
+    res,
+    StatusCodes.OK,
+    "Blogs found successfully",
+    blogs
+  );
 });
