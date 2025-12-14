@@ -115,4 +115,18 @@ export const getBlogBySearch = createAsyncThunk(
   }
 );
 
+export const getMyBlogs = createAsyncThunk(
+  "blog/myBlogs",
+  async (_, thunkAPI) => {
+    try {
+      const res = await axiosInstance.get("/blogs/my-blogs");
+      return res.data.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Failed"
+      );
+    }
+  }
+);
+
 

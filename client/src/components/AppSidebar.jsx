@@ -35,6 +35,7 @@ const AppSidebar = () => {
   const { category: categories, loading } = useSelector(
     (state) => state.category
   );
+  const { user } = useSelector((state) => state.auth);
   useEffect(() => {
     dispatch(getAllCategories());
   }, [dispatch]);
@@ -55,14 +56,14 @@ const AppSidebar = () => {
                 </SidebarMenuButton>
               </Link>
             </SidebarMenuItem>
-            <SidebarMenuItem>
+            {/* <SidebarMenuItem>
               <Link to={RouteCategoryDetails}>
                 <SidebarMenuButton>
                   <ChartColumnStacked />
                   <span>Categories</span>
                 </SidebarMenuButton>
               </Link>
-            </SidebarMenuItem>
+            </SidebarMenuItem> */}
             <SidebarMenuItem>
               <Link to={RouteBlog}>
                 <SidebarMenuButton>
@@ -71,22 +72,34 @@ const AppSidebar = () => {
                 </SidebarMenuButton>
               </Link>
             </SidebarMenuItem>
-            <SidebarMenuItem>
-              <Link to={RouteAdComments}>
-                <SidebarMenuButton>
-                  <MessageCircle />
-                  <span>Comments</span>
-                </SidebarMenuButton>
-              </Link>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <Link to={RouteAllUser}>
-                <SidebarMenuButton>
-                  <Users />
-                  <span>Users</span>
-                </SidebarMenuButton>
-              </Link>
-            </SidebarMenuItem>
+            {user && user.role === "admin" && (
+              <>
+                <SidebarMenuItem>
+                  <Link to={RouteCategoryDetails}>
+                    <SidebarMenuButton>
+                      <ChartColumnStacked />
+                      <span>Categories</span>
+                    </SidebarMenuButton>
+                  </Link>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <Link to={RouteAdComments}>
+                    <SidebarMenuButton>
+                      <MessageCircle />
+                      <span>Comments</span>
+                    </SidebarMenuButton>
+                  </Link>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <Link to={RouteAllUser}>
+                    <SidebarMenuButton>
+                      <Users />
+                      <span>Users</span>
+                    </SidebarMenuButton>
+                  </Link>
+                </SidebarMenuItem>
+              </>
+            )}
           </SidebarMenu>
         </SidebarGroup>
         {/* anothes group */}

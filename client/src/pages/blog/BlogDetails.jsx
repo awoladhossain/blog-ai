@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { RouteBlogAdd, RouteBlogEdit } from "@/helpers/RouteName";
-import { deleteBlog, getAllBlogs } from "@/redux/api/blogAPI";
+import { deleteBlog, getMyBlogs } from "@/redux/api/blogAPI";
 import { SquarePen, Trash } from "lucide-react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,17 +20,17 @@ import { toast } from "sonner";
 const BlogDetails = () => {
   const dispatch = useDispatch();
   const { blogs, loading, error } = useSelector((state) => state.blog);
+  console.log(blogs);
 
   useEffect(() => {
-    dispatch(getAllBlogs());
-  }, []);
+    dispatch(getMyBlogs());
+  }, [dispatch]);
 
   if (loading) {
     return <SpinnerCustom />;
   }
 
   const handleDeleteBlog = (id) => {
-
     dispatch(deleteBlog(id))
       .unwrap()
       .then((res) => {

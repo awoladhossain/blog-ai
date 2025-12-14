@@ -5,6 +5,7 @@ import {
   getAllBlogs,
   getBlogByCategory,
   getBlogBySearch,
+  getMyBlogs,
   getRelatedBlogs,
   singleBlog,
   updateBlog,
@@ -136,6 +137,17 @@ const blogSlice = createSlice({
         state.error = null;
       })
       .addCase(getBlogBySearch.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getMyBlogs.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getMyBlogs.fulfilled, (state, action) => {
+        state.loading = false;
+        state.blogs = action.payload;
+      })
+      .addCase(getMyBlogs.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

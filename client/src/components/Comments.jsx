@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { addComment, getAllComments, getCommentsByBlogId } from "@/redux/api/commentAPI";
+import { addComment, getCommentsByBlogId } from "@/redux/api/commentAPI";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MessageSquareMore } from "lucide-react";
 import { useEffect } from "react";
@@ -9,23 +9,21 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { Button } from "./ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
-import { Textarea } from "./ui/textarea";
 import { SpinnerCustom } from "./ui/spinner";
+import { Textarea } from "./ui/textarea";
 
 const Comments = () => {
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.auth);
   const { singleBlog } = useSelector((state) => state.blog);
-  const { comments , loading} = useSelector((state) => state.comment);
+  const { comments, loading } = useSelector((state) => state.comment);
 
-
-useEffect(() => {
-  if (singleBlog?._id) {
-    dispatch(getCommentsByBlogId(singleBlog._id));
-  }
-}, [singleBlog?._id]);
-
+  useEffect(() => {
+    if (singleBlog?._id) {
+      dispatch(getCommentsByBlogId(singleBlog._id));
+    }
+  }, [singleBlog?._id]);
 
   const formSchema = z.object({
     comments: z.string().min(2, {
@@ -58,8 +56,7 @@ useEffect(() => {
   // Filter comments by this blog
   const filteredComments = comments.filter((c) => c.blogId === singleBlog?._id);
 
-
-  if(loading) return <SpinnerCustom />
+  if (loading) return <SpinnerCustom />;
 
   return (
     <div>
