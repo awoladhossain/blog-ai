@@ -144,22 +144,22 @@ export const editBlog = catchAsync(async (req, res, next) => {
   );
 });
 
-export const deleteBlog = catchAsync(async (req, res, next) => {
-  const id = req.params.id;
-  const blog = await Blog.findByIdAndDelete(id);
+export const deleteBlog = async (req, res, next) => {
+  const blog = await Blog.findById(req.params.id);
 
   if (!blog) {
-    return next(new AppError("Blog not found", StatusCodes.NOT_FOUND));
+    return next(new AppError("Blog not found", 404));
   }
 
-  // Return the deleted blog
-  return successResponse(
-    res,
-    StatusCodes.OK,
-    "Blog deleted successfully",
-    blog
-  );
-});
+  // 🔐 Ownership check
+  if (blog.author.toString() !== req.user._id.toString()) {
+    return next(new AppError("Unauthorized", 403));
+  }
+
+  await blog.deleteOne();
+
+  return successResponse(res, 200, "Blog deleted successfully", blog);
+};
 
 export const getRelatedBlogs = catchAsync(async (req, res, next) => {
   const { id } = req.params;
@@ -215,3 +215,11 @@ export const searchBlogs = catchAsync(async (req, res, next) => {
     blogs
   );
 });
+
+export const showMyBlogs = async (req, res, next) => {
+  const blogs = await Blog.find({ author: req.user._id })
+    .populate("author", "fullname")
+    .populate("category", "name");
+
+  return successResponse(res, 200, "My blogs", blogs);
+};

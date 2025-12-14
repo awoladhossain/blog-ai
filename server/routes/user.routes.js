@@ -5,12 +5,13 @@ import {
   getUserByID,
   updateUserProfile,
 } from "../controllers/user.controller.js";
+import { protect } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/upload.middleware.js";
 const router = express.Router();
 
-router.get("/", getAllUsers);
-router.get("/:userId", getUserByID);
-router.put("/:userId", upload.single("avatar"), updateUserProfile);
-router.delete("/delete/:userId", deleteUser);
+router.get("/", protect, getAllUsers);
+router.get("/:userId", protect, getUserByID);
+router.put("/:userId", protect, upload.single("avatar"), updateUserProfile);
+router.delete("/delete/:userId", protect, deleteUser);
 
 export default router;
